@@ -1,0 +1,133 @@
+﻿<Window x:Class="LordVirusPersonalMw2RTMToolXbox.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LordVirusPersonalMw2RTMToolXbox"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="221" Width="400" Background="#FF262626" WindowStyle="None" AllowsTransparency="True">
+
+    <Grid x:Name="WindowBase">
+        <Grid x:Name="ControlsGrid" Background="Gray">
+            <Border BorderThickness="1,1,1,1">
+                <Border.BorderBrush>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF569DE5" Offset="0"/>
+
+                        <GradientStop Color="#FF464646" Offset=".8"/>
+                    </LinearGradientBrush>
+                </Border.BorderBrush>
+                <Grid Margin="0,30,0,5"/>
+            </Border>
+        </Grid>
+
+        <Grid x:Name="TitleControlBar" MouseDown="Window_MouseDown" Margin="0,0,0,191" Background="Transparent">
+            <Label x:Name="Client_Label" Content="Lord Virus's Personal MW2 Xbox Tool" HorizontalAlignment="Left" Margin="7,0,0,0" VerticalAlignment="Center" Foreground="white" Height="30"/>
+            <Button x:Name="MinimizeForm" Content="_" HorizontalAlignment="Right" Margin="0,0,30,0" VerticalAlignment="Top" Height="30" Width="30" Background="#00000000" BorderBrush="#00000000" Foreground="White" FontFamily="OCR A Extended" FontSize="10" Click="MinimizeForm_Click"/>
+            <Button x:Name="CloseForm" Content="X" Margin="0,0,0,0" VerticalAlignment="Top" Height="30" Click="CloseForm_Click" Background="#00000000" BorderBrush="#00000000" Foreground="White" FontFamily="OCR A Extended" FontSize="10" HorizontalAlignment="Right" Width="30"/>
+        </Grid>
+
+        <Grid Margin="1,30,1,1" Background="#444444">
+            <Grid.Resources>
+                <Style TargetType="{x:Type Label}">
+                    <Setter Property="Foreground" Value="white" />
+                </Style>
+
+                <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="Background" Value="#FF323232" />
+                    <Setter Property="Foreground" Value="LightGray" />
+                </Style>
+
+
+                <Style x:Key="{x:Type CheckBox}" TargetType="{x:Type CheckBox}">
+                    <Setter Property="SnapsToDevicePixels" Value="true"/>
+                    <Setter Property="OverridesDefaultStyle" Value="true"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type CheckBox}">
+                                <BulletDecorator Background="Transparent">
+                                    <BulletDecorator.Bullet>
+                                        <Border x:Name="Border" Width="13" Height="13" CornerRadius="0" Background="#C0C0C0" BorderThickness="1" BorderBrush="#404040">
+                                            <Path Width="7" Height="7" x:Name="CheckMark" SnapsToDevicePixels="False" Stroke="#404040" StrokeThickness="2" Data="M 0 0 L 7 7 M 0 7 L 7 0" />
+                                        </Border>
+                                    </BulletDecorator.Bullet>
+                                    <ContentPresenter Margin="4,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" RecognizesAccessKey="True"/>
+                                </BulletDecorator>
+                                <ControlTemplate.Triggers>
+
+                                    <Trigger Property="IsChecked" Value="false">
+                                        <Setter TargetName="CheckMark" Property="Visibility" Value="Collapsed"/>
+                                    </Trigger>
+                                    <Trigger Property="IsChecked" Value="{x:Null}">
+                                        <Setter TargetName="CheckMark" Property="Data" Value="M 0 7 L 7 0" />
+                                    </Trigger>
+
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Background" Value="#FF3C3C3C" />
+                                        <Setter Property="BorderBrush" Value="white" />
+                                    </Trigger>
+
+                                    <Trigger Property="IsMouseOver" Value="false">
+                                        <Setter Property="Background" Value="#FF323232"/>
+                                        <Setter Property="BorderBrush" Value="#FF666666" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#FF323232" />
+                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="Cursor" Value="Hand" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#FF3C3C3C" />
+                                        <Setter Property="BorderBrush" Value="#FF6CA5C8" />
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="false">
+                                        <Setter Property="Background" Value="#FF323232"/>
+                                        <Setter Property="BorderBrush" Value="#FF666666" />
+                                    </Trigger>
+
+                                    <Trigger Property="IsEnabled" Value="True">
+                                        <Setter Property="Foreground" Value="white" />
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Foreground" Value="#FF666666" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Grid.Resources>
+
+            <Label Content="Connection:" HorizontalAlignment="Left" Margin="27,1,0,0" VerticalAlignment="Top" Width="75"/>
+            <Button x:Name="ConnectButton" Content="Connect" HorizontalAlignment="Left" Margin="31,27,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="ConnectButton_Click"/>
+
+            <Label Content="Name Changer:" HorizontalAlignment="Left" Margin="27,58,0,0" VerticalAlignment="Top" Width="113"/>
+            <Button x:Name="ChangeNameButton" IsEnabled="false" Content="Change" HorizontalAlignment="Left" Margin="256,83,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="ChangeNameButton_Click"/>
+            <TextBox x:Name="NameChangerTextBox" IsEnabled="false" MaxLength="32" HorizontalAlignment="Left" Margin="30,83,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="221" Height="20"/>
+            <CheckBox x:Name="RealTimeNameChangeCheckBox" Content="Real Time Update" IsEnabled="false" HorizontalAlignment="Left" Margin="31,109,0,0" VerticalAlignment="Top" Width="122" Checked="RealTimeNameChangeCheckBox_Checked" Unchecked="RealTimeNameChangeCheckBox_Unchecked"/>
+            <CheckBox x:Name="RainbowCheckBox" Content="Rainbow?" IsEnabled="false" HorizontalAlignment="Left" Margin="153,109,0,0" VerticalAlignment="Top" Width="75" Checked="RainbowCheckBox_Checked" Unchecked="RainbowCheckBox_Unchecked"/>
+
+            <Label Content="Clan Tag Changer:" HorizontalAlignment="Left" Margin="28,132,0,0" VerticalAlignment="Top" Width="113"/>
+            <Button x:Name="ChangeClanNameButton" IsEnabled="false" Content="Change" HorizontalAlignment="Left" Margin="257,158,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="ChangeClanNameButton_Click"/>
+            <TextBox x:Name="ClanNameChangerTextBox" IsEnabled="false" MaxLength="4" HorizontalAlignment="Left" Margin="31,158,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="221" Height="20"/>
+
+
+            <CheckBox x:Name="LaserCheckBox" Content="Laser" IsEnabled="false" HorizontalAlignment="Right" Margin="0,29,148,0" VerticalAlignment="Top" Width="56" Checked="LaserCheckBox_Checked" Unchecked="LaserCheckBox_UnChecked"/>
+            <CheckBox x:Name="RedBoxCheckBox" Content="Red Boxs" IsEnabled="false" HorizontalAlignment="Right" Margin="0,29,58,0" VerticalAlignment="Top" Width="72" Checked="RedBoxCheckBox_Checked" Unchecked="RedBoxCheckBox_UnChecked"/>
+            <CheckBox x:Name="ButtonCheckBox" Content="Buttons?" IsEnabled="false" HorizontalAlignment="Left" Margin="238,109,0,0" VerticalAlignment="Top" Width="76" Checked="RainbowCheckBox_Checked" Unchecked="RainbowCheckBox_Unchecked"/>
+        </Grid>
+    </Grid>
+</Window>

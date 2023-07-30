@@ -1,0 +1,60 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net7.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+		<LangVersion>latest</LangVersion>
+		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+		<EnableDefaultPageItems>false</EnableDefaultPageItems>
+		<PackageIcon>MW2.png</PackageIcon>
+		<ApplicationIcon>MW2.ico</ApplicationIcon>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Reference Include="XDevkit">
+			<HintPath>lib\xdevkit.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Page Include="MainWindow.xaml">
+			<Generator>MSBuild:Compile</Generator>
+			<SubType>Designer</SubType>
+		</Page>
+		<Compile Include="MainWindow.xaml.cs">
+			<DependentUpon>MainWindow.xaml</DependentUpon>
+			<SubType>Code</SubType>
+		</Compile>
+		<Compile Include="MainWindow.Cheats.xaml.cs">
+			<DependentUpon>MainWindow.xaml</DependentUpon>
+			<SubType>Code</SubType>
+		</Compile>
+		<Compile Include="lib/XRPC.cs" />
+		<Compile Include="AssemblyInfo.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="MW2.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Costura.Fody" Version="5.7.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="MW2.ico">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	  <None Update="MW2.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
+
+</Project>

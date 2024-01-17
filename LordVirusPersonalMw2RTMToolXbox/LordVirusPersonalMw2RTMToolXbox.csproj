@@ -10,12 +10,12 @@
 		<EnableDefaultPageItems>false</EnableDefaultPageItems>
 		<PackageIcon>MW2.png</PackageIcon>
 		<ApplicationIcon>MW2.ico</ApplicationIcon>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Reference Include="XDevkit">
-			<HintPath>lib\xdevkit.dll</HintPath>
-		</Reference>
+	  <None Remove="lib\xdevkit.dll" />
+	  <None Remove="lib\xdrpc.dll" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -23,6 +23,30 @@
 			<Generator>MSBuild:Compile</Generator>
 			<SubType>Designer</SubType>
 		</Page>
+		<Compile Include="lib\XDRPC\MarshalingUtils.cs" />
+		<Compile Include="lib\XDRPC\XDRPCArgumentInfo.cs" />
+		<Compile Include="lib\XDRPC\XDRPCException.cs" />
+		<Compile Include="lib\XDRPC\XDRPCExecutionOptions.cs" />
+		<Compile Include="lib\XDRPC\XDRPCExecutionState.cs" />
+		<Compile Include="lib\XDRPC\XDRPCFunctionNotFoundException.cs" />
+		<Compile Include="lib\XDRPC\XDRPCInvalidArgumentTypeException.cs" />
+		<Compile Include="lib\XDRPC\XDRPCInvalidOperationException.cs" />
+		<Compile Include="lib\XDRPC\XDRPCInvalidResponseException.cs" />
+		<Compile Include="lib\XDRPC\XDRPCInvalidReturnTypeException.cs" />
+		<Compile Include="lib\XDRPC\XDRPCInvalidTypeException.cs" />
+		<Compile Include="lib\XDRPC\XDRPCInvocationFailedException.cs" />
+		<Compile Include="lib\XDRPC\XDRPCMarshaler.cs" />
+		<Compile Include="lib\XDRPC\XDRPCModuleNotFoundException.cs" />
+		<Compile Include="lib\XDRPC\XDRPCNotSupportedException.cs" />
+		<Compile Include="lib\XDRPC\XDRPCNullArgumentInfo.cs" />
+		<Compile Include="lib\XDRPC\XDRPCPlusPlus\XDRPCPlusPlus.cs">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Compile>
+		<Compile Include="lib\XDRPC\XDRPCReference.cs" />
+		<Compile Include="lib\XDRPC\XDRPCReferenceMonitor.cs" />
+		<Compile Include="lib\XDRPC\XDRPCTimeoutException.cs" />
+		<Compile Include="lib\XDRPC\XDRPCTooManyArgumentsException.cs" />
+		<Compile Include="lib\XDRPC\XDRPCUnionAttribute.cs" />
 		<Compile Include="MainWindow.xaml.cs">
 			<DependentUpon>MainWindow.xaml</DependentUpon>
 			<SubType>Code</SubType>
@@ -31,8 +55,12 @@
 			<DependentUpon>MainWindow.xaml</DependentUpon>
 			<SubType>Code</SubType>
 		</Compile>
-		<Compile Include="lib/XRPC.cs" />
+		<Compile Include="MainWindow.Cheats.Addresses.xaml.cs">
+			<DependentUpon>MainWindow.xaml</DependentUpon>
+			<SubType>Code</SubType>
+		</Compile>
 		<Compile Include="AssemblyInfo.cs" />
+		<Compile Include="Utilities.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -40,10 +68,25 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="ConfigureAwait.Fody" Version="3.3.2" />
 		<PackageReference Include="Costura.Fody" Version="5.7.0">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="XDevkit">
+	    <HintPath>lib\xdevkit.dll</HintPath>
+	    <Private>True</Private>
+	  </Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="lib\XDevkit.dll">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Resource>
 	</ItemGroup>
 
 	<ItemGroup>

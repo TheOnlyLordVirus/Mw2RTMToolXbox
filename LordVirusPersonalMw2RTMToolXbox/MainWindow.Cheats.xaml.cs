@@ -387,12 +387,12 @@ public sealed partial class MainWindow
         Span<byte> nameBytes = stackalloc byte[32];
         Encoding.ASCII.GetBytes(newName, nameBytes);
 
-        if (InGame)
-        {
-            Internal_CbufAddText("");
+        //if (InGame)
+        //{
+        //    //Internal_CbufAddText($"userinfo \"\\clanabbrev\\{colorCode}{clanName}\\name\\{newName}\"");
 
-            return;
-        }
+        //    return;
+        //}
 
         DevKit?.DebugTarget
             .SetMemory
@@ -514,8 +514,8 @@ public sealed partial class MainWindow
             (NameChangerTextBox.Text.Length > maxNameInputLength) ?
                 NameChangerTextBox.Text[..maxNameInputLength] : NameChangerTextBox.Text;
 
-        Internal_AddFlashingCodes(newNameBuffer, out newNameBuffer);
-        Internal_AddButtonCodes(newNameBuffer, out newNameBuffer);
+        Internal_ParseFlashingCodes(newNameBuffer, out newNameBuffer);
+        Internal_ParseButtonCodes(newNameBuffer, out newNameBuffer);
 
         if ((!RainbowCheckBox.IsChecked ?? false) && (!ButtonCheckBox.IsChecked ?? false))
             return newNameBuffer.ToString();
@@ -557,7 +557,7 @@ public sealed partial class MainWindow
         newName = tempName.ToArray();
     }
 
-    private void Internal_AddFlashingCodes(ReadOnlySpan<char> name, out ReadOnlySpan<char> newName)
+    private void Internal_ParseFlashingCodes(ReadOnlySpan<char> name, out ReadOnlySpan<char> newName)
     {
         Span<char> tempName = stackalloc char[name.Length];
         name.CopyTo(tempName);
@@ -579,7 +579,7 @@ public sealed partial class MainWindow
         newName = tempName.ToArray();
     }
 
-    private void Internal_AddButtonCodes(ReadOnlySpan<char> inputName, out ReadOnlySpan<char> newName)
+    private void Internal_ParseButtonCodes(ReadOnlySpan<char> inputName, out ReadOnlySpan<char> newName)
     {
         Span<char> tempName = stackalloc char[inputName.Length];
         inputName.CopyTo(tempName);

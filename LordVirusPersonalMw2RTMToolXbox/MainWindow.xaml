@@ -518,12 +518,12 @@
             <Button x:Name="EndGameButton" Content="End Game" IsEnabled="False" HorizontalAlignment="Left" Margin="640,21,0,0" VerticalAlignment="Top" Click="EndGameButton_Click" Height="18" Width="113"/>
 
             <Label Content="CBuffAddText:" HorizontalAlignment="Left" Margin="411,58,0,0" VerticalAlignment="Top" Width="113"/>
-            <Button IsEnabled="false" Content="Send" HorizontalAlignment="Left" Margin="640,83,0,0" VerticalAlignment="Top" Height="20" Width="113"/>
-            <TextBox IsEnabled="false" MaxLength="32" HorizontalAlignment="Left" Margin="414,83,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="221" Height="20"/>
+            <Button x:Name="CBuffAddTextButton" IsEnabled="false" Content="Send" HorizontalAlignment="Left" Margin="640,83,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="CBuffAddTextButton_Click"/>
+            <TextBox x:Name="CBuffAddTextBox" IsEnabled="false" MaxLength="32" HorizontalAlignment="Left" Margin="414,83,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="221" Height="20"/>
 
             <Label Content="SendGameServerCommand" HorizontalAlignment="Left" Margin="411,128,0,0" VerticalAlignment="Top" Width="176"/>
-            <Button IsEnabled="false" Content="Send" HorizontalAlignment="Left" Margin="640,153,0,0" VerticalAlignment="Top" Height="20" Width="113"/>
-            <TextBox IsEnabled="false" MaxLength="32" HorizontalAlignment="Left" Margin="414,153,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="221" Height="20"/>
+            <Button x:Name="SendGameServerCommandButton" IsEnabled="false" Content="Send" HorizontalAlignment="Left" Margin="640,153,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="SendGameServerCommandButton_Click"/>
+            <TextBox x:Name="SendGameServerCommandTextBox" IsEnabled="false" MaxLength="32" HorizontalAlignment="Left" Margin="414,153,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="221" Height="20"/>
 
             <ComboBox IsEnabled="false" HorizontalAlignment="Left" Margin="414,204,0,0" VerticalAlignment="Top" Width="221" Height="20">
                 <ListBoxItem Content="Test Client"/>

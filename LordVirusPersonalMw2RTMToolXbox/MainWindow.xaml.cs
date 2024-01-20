@@ -254,6 +254,18 @@ public sealed partial class MainWindow : Window
         Internal_SetLevelLooping(false);
     }
 
+    private void CBuffAddTextButton_Click(object sender, RoutedEventArgs e)
+    {
+        Internal_CbufAddText(CBuffAddTextBox.Text);
+    }
+
+    private void SendGameServerCommandButton_Click(object sender, RoutedEventArgs e)
+    {
+        int client = -1; // TODO: Get current client from the drop box.
+
+        Internal_GameSendServerCommand(client, 0, SendGameServerCommandTextBox);
+    }
+
     private void EndGameButton_Click(object sender, RoutedEventArgs e)
     {
         int? number = DevKit?.ReadInt32(_nonHostEndGame);

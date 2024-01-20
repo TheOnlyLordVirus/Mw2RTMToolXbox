@@ -171,19 +171,25 @@ public sealed partial class MainWindow
 
             PrestigeIntegerUpDown.Value = 10;
             PrestigeIntegerUpDown.Maximum = _maxPrestige;
-            PrestigeIntegerUpDown.Minimum = 0;
+            PrestigeIntegerUpDown.Minimum = _minPrestige;
             PrestigeIntegerUpDown.IsEnabled = true;
             ChangePrestigeButton.IsEnabled = true;
             LoopPrestigeCheckBox.IsEnabled = true;
 
             LevelIntegerUpDown.Value = _maxLevel;
             LevelIntegerUpDown.Maximum = _maxLevel;
-            LevelIntegerUpDown.Minimum = 1;
+            LevelIntegerUpDown.Minimum = _minLevel;
             LevelIntegerUpDown.IsEnabled = true;
             ChangeLevelButton.IsEnabled = true;
             LoopLevelCheckBox.IsEnabled = true;
-            UnlockAllButton.IsEnabled = true;
 
+            CBuffAddTextBox.IsEnabled = true;
+            CBuffAddTextButton.IsEnabled = true;
+
+            SendGameServerCommandTextBox.IsEnabled = true;
+            SendGameServerCommandButton.IsEnabled = true;
+
+            UnlockAllButton.IsEnabled = true;
             EndGameButton.IsEnabled = true;
 
             Internal_UpdateCurrentUserInfo();

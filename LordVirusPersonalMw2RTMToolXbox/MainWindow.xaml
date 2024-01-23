@@ -430,6 +430,11 @@
                                         <Setter TargetName="CheckMark" Property="Data" Value="M 0 7 L 7 0" />
                                     </Trigger>
 
+                                    <Trigger Property="IsEnabled" Value="false">
+                                        <Setter Property="Foreground" Value="#FF666666"/>
+                                        
+                                    </Trigger>
+                                    
                                     <Trigger Property="IsMouseOver" Value="true">
                                         <Setter Property="Background" Value="#FF3C3C3C" />
                                         <Setter Property="BorderBrush" Value="white" />
@@ -490,8 +495,8 @@
             <CheckBox x:Name="CartoonCheckBox" Content="Cartoon" IsEnabled="false" HorizontalAlignment="Left" Margin="353,39,0,0" VerticalAlignment="Top" Width="66" Checked="CartoonCheckBox_Checked" Unchecked="CartoonCheckBox_UnChecked"/>
 
             <CheckBox x:Name="ChromeCheckBox" Content="Chrome" IsEnabled="false" Margin="425,19,0,0" VerticalAlignment="Top" Checked="ChromeCheckBox_Checked" Unchecked="ChromeCheckBox_UnChecked" HorizontalAlignment="Left" Width="66"/>
-            <CheckBox x:Name="UiDebugCheckBox" Content="Debug" IsEnabled="false" HorizontalAlignment="Left" Margin="425,39,0,0" VerticalAlignment="Top" Width="64" Checked="UiDebugCheckBox_Checked" Unchecked="UiDebugCheckBox_UnChecked"/>
-            <CheckBox x:Name="FxCheckBox" Content="Game Fx" IsEnabled="True" IsChecked="True" HorizontalAlignment="Left" Margin="492,19,0,0" VerticalAlignment="Top" Width="64" Checked="FxCheckBox_Checked" Unchecked="FxCheckBox_UnChecked"/>
+            <CheckBox x:Name="UiDebugCheckBox" Content="Ui Debug" IsEnabled="false" HorizontalAlignment="Left" Margin="425,39,0,0" VerticalAlignment="Top" Width="74" Checked="UiDebugCheckBox_Checked" Unchecked="UiDebugCheckBox_UnChecked"/>
+            <CheckBox x:Name="FxCheckBox" Content="Game Fx" IsEnabled="false" IsChecked="True" HorizontalAlignment="Left" Margin="492,19,0,0" VerticalAlignment="Top" Width="64" Checked="FxCheckBox_Checked" Unchecked="FxCheckBox_UnChecked"/>
 
             <Label Content="Name Changer:" HorizontalAlignment="Left" Margin="27,58,0,0" VerticalAlignment="Top" Width="113"/>
             <Button x:Name="ChangeNameButton" IsEnabled="false" Content="Change" HorizontalAlignment="Left" Margin="271,83,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="ChangeNameButton_Click"/>

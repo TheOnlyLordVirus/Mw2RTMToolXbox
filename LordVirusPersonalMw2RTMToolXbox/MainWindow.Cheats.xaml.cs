@@ -94,7 +94,7 @@ public sealed partial class MainWindow
             ClientComboBox.IsEnabled = true;
 
             Internal_UpdateCurrentUserInfo();
-            Mw2GameFunctions.Cg_DvarGetBool(DevKit!, "loc_warningsUI 0; loc_warnings 0; cg_blood 0; cg_bloodLimit 0;");
+            Mw2GameFunctions.Cg_DvarGetBool(DevKit!, "loc_warningsUI 0; loc_warnings 0; cg_blood 0; cg_bloodLimit 1;");
 
             MessageBox.Show
             (
@@ -522,10 +522,8 @@ public sealed partial class MainWindow
         {
             Internal_SetName(Internal_BuildAutoUpdatingNameString());
 
-            TimeSpan delay = TimeSpan.FromMicroseconds(150);
-
             await Task
-                .Delay(delay, cancellationToken)
+                .Delay(TimeSpan.FromMicroseconds(150), cancellationToken)
                 .ConfigureAwait(true);
         }
         while (!cancellationToken.IsCancellationRequested);

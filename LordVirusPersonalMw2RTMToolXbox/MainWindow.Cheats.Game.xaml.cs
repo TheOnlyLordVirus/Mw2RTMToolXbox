@@ -338,7 +338,7 @@ internal class G_ClientCheat : IGameCheat
 
     public void Toggle()
     {
-        _enabled = !_enabled;
+        _enabled = !(GetValue());
 
         if (_enabled)
             Enable();

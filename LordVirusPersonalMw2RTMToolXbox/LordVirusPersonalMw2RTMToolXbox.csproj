@@ -55,6 +55,10 @@
 			<DependentUpon>MainWindow.xaml</DependentUpon>
 			<SubType>Code</SubType>
 		</Compile>
+    <Compile Include="MainWindow.Cheats.Game.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
 		<Compile Include="MainWindow.Cheats.Addresses.xaml.cs">
 			<DependentUpon>MainWindow.xaml</DependentUpon>
 			<SubType>Code</SubType>

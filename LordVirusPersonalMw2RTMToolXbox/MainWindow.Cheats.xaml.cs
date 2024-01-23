@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -24,6 +25,8 @@ public sealed partial class MainWindow
     private CancellationTokenSource? NameChangerCancellationTokenSource = null;
     private CancellationTokenSource? LevelCancellationTokenSource = null;
     private CancellationTokenSource? PrestigeCancellationTokenSource = null;
+
+    private const byte _maxNameInputLength = 34;
 
     private const int _maxPrestige = 11;
     private const int _minPrestige = 0;
@@ -164,7 +167,6 @@ public sealed partial class MainWindow
             NameChangerTextBox.IsEnabled = true;
             ChangeNameButton.IsEnabled = true;
             RealTimeNameChangeCheckBox.IsEnabled = true;
-            RainbowCheckBox.IsEnabled = true;
 
             ClanNameChangerTextBox.IsEnabled = true;
             ChangeClanNameButton.IsEnabled = true;
@@ -193,15 +195,24 @@ public sealed partial class MainWindow
             EndGameButton.IsEnabled = true;
 
             Internal_UpdateCurrentUserInfo();
-            Internal_CbufAddText("loc_warningsUI 0; loc_warnings 0");
+            Internal_CbufAddText("loc_warningsUI 0; loc_warnings 0;");
+
 
             MessageBox.Show
             (
-                "Successfuly Connected!",
-                "Connection",
+                $"{Internal_IsLocalClientInGame()}",
+                "In game?",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information
             );
+
+            //MessageBox.Show
+            //(
+            //    "Successfuly Connected!",
+            //    "Connection",
+            //    MessageBoxButton.OK,
+            //    MessageBoxImage.Information
+            //);
         }
 
         catch (Exception ex)
@@ -225,9 +236,18 @@ public sealed partial class MainWindow
         }
     }
 
+    private bool Internal_IsLocalClientInGame(int client = 0)
+    {
+        return DevKit?.ExecuteRPC<bool>
+        (
+            new XDRPCExecutionOptions(XDRPCMode.Title, 0x82182990),
+            new object[] { client }
+        ) ?? false;
+    }
+
     private void Internal_UpdateCurrentUserInfo()
     {
-        Span<byte> initNameByteSpan = DevKit?.ReadBytes(_nameAddress, 32);
+        Span<byte> initNameByteSpan = DevKit?.ReadBytes(_nameAddress, _maxNameInputLength);
         initNameByteSpan = initNameByteSpan.TrimEnd((byte)0x00);
 
         Span<char> nameChars = stackalloc char[initNameByteSpan.Length];
@@ -387,18 +407,18 @@ public sealed partial class MainWindow
 
     private void Internal_SetName(ReadOnlySpan<char> newName)
     {
-        if (newName.Length > 32)
-            newName = newName[..32];
+        if (newName.Length > _maxNameInputLength)
+            newName = newName[.._maxNameInputLength];
 
-        Span<byte> nameBytes = stackalloc byte[32];
+        Span<byte> nameBytes = stackalloc byte[_maxNameInputLength];
         Encoding.ASCII.GetBytes(newName, nameBytes);
 
-        //if (InGame)
-        //{
-        //    //Internal_CbufAddText($"userinfo \"\\clanabbrev\\{colorCode}{clanName}\\name\\{newName}\"");
+        if (InGame)
+        {
+            Internal_CbufAddText($"userinfo \"\\clanabbrev\\^{_random.Next(6)}\\name\\{newName}\"");
 
-        //    return;
-        //}
+            return;
+        }
 
         DevKit?.DebugTarget
             .SetMemory
@@ -442,7 +462,6 @@ public sealed partial class MainWindow
             return;
         }
 
-
         if (NameChangerCancellationTokenSource is null)
             return;
 
@@ -457,7 +476,7 @@ public sealed partial class MainWindow
         ButtonCheckBox.IsEnabled = false;
         ButtonCheckBox.IsChecked = false;
 
-        NameChangerTextBox.MaxLength = 32;
+        NameChangerTextBox.MaxLength = _maxNameInputLength;
     }
 
     private void Internal_SetLevelLooping(bool toggleValue)
@@ -508,60 +527,60 @@ public sealed partial class MainWindow
 
     private ReadOnlySpan<char> Internal_BuildAutoUpdatingNameString()
     {
-        byte maxNameInputLength = 32;
+        byte tempMaxNameInputLength = _maxNameInputLength;
 
-        if (RainbowCheckBox.IsChecked ?? false)
-            maxNameInputLength -= 2;
+        ReadOnlySpan<char> newNameBuffer = NameChangerTextBox.Text;
 
-        if (ButtonCheckBox.IsChecked ?? false)
-            maxNameInputLength -= 2;
+        if (newNameBuffer.Length < _maxNameInputLength)
+            goto ParseSpan;
 
-        ReadOnlySpan<char> newNameBuffer =
-            (NameChangerTextBox.Text.Length > maxNameInputLength) ?
-                NameChangerTextBox.Text[..maxNameInputLength] : NameChangerTextBox.Text;
-
-        Internal_ParseFlashingCodes(newNameBuffer, out newNameBuffer);
-        Internal_ParseButtonCodes(newNameBuffer, out newNameBuffer);
-
-        if ((!RainbowCheckBox.IsChecked ?? false) && (!ButtonCheckBox.IsChecked ?? false))
-            return newNameBuffer.ToString();
-
-        if (RainbowCheckBox.IsChecked ?? false)
+        for (int i = 0; i < newNameBuffer.Length; ++i)
         {
-            Internal_AddColors(newNameBuffer, out newNameBuffer);
+            ++i;
+            if (!(newNameBuffer[i - 1] == '^' &&
+                (newNameBuffer[i] == 'B' ||
+                    newNameBuffer[i] == 'b')))
+                continue;
+
+            tempMaxNameInputLength++;
         }
 
+        // Slice to buffer length;
+        newNameBuffer = newNameBuffer[..tempMaxNameInputLength];
+
+        ParseSpan:
+        if (RainbowCheckBox.IsChecked ?? false) 
+            Internal_ParseFlashingCodes(newNameBuffer, out newNameBuffer);
+
         if (ButtonCheckBox.IsChecked ?? false)
-        {
-            Internal_AddButtons(newNameBuffer, out newNameBuffer);
-        }
+            Internal_ParseButtonCodes(newNameBuffer, out newNameBuffer);
 
         return newNameBuffer;
     }
 
-    private void Internal_AddButtons(ReadOnlySpan<char> name, out ReadOnlySpan<char> newName)
-    {
-        Span<char> tempName = stackalloc char[name.Length + 2];
+    //private void Internal_AddButtons(ReadOnlySpan<char> name, out ReadOnlySpan<char> newName)
+    //{
+    //    Span<char> tempName = stackalloc char[name.Length + 2];
 
-        int buttonIndex = _random.Next(8);
+    //    int buttonIndex = _random.Next(8);
 
-        byte index = 0;
-        tempName[index] = _buttonCodes[buttonIndex, 0]; index++;
-        name.CopyTo(tempName[index..]); index += (byte)name.Length;
-        tempName[index] = _buttonCodes[buttonIndex, 1];
+    //    byte index = 0;
+    //    tempName[index] = _buttonCodes[buttonIndex, 0]; index++;
+    //    name.CopyTo(tempName[index..]); index += (byte)name.Length;
+    //    tempName[index] = _buttonCodes[buttonIndex, 1];
 
-        newName = tempName.ToArray();
-    }
+    //    newName = tempName.ToArray();
+    //}
 
-    private void Internal_AddColors(ReadOnlySpan<char> name, out ReadOnlySpan<char> newName)
-    {
-        Span<char> tempName = stackalloc char[name.Length + 2];
+    //private void Internal_AddColors(ReadOnlySpan<char> name, out ReadOnlySpan<char> newName)
+    //{
+    //    Span<char> tempName = stackalloc char[name.Length + 2];
 
-        tempName[0] = '^';
-        tempName[1] = (char)(_random.Next(6) + 48);
-        name.CopyTo(tempName[2..]);
-        newName = tempName.ToArray();
-    }
+    //    tempName[0] = '^';
+    //    tempName[1] = (char)(_random.Next(6) + 48);
+    //    name.CopyTo(tempName[2..]);
+    //    newName = tempName.ToArray();
+    //}
 
     private void Internal_ParseFlashingCodes(ReadOnlySpan<char> name, out ReadOnlySpan<char> newName)
     {
@@ -622,9 +641,11 @@ public sealed partial class MainWindow
         do
         {
             Internal_SetName(Internal_BuildAutoUpdatingNameString());
-            
+
+            TimeSpan delay = TimeSpan.FromMicroseconds(150);
+
             await Task
-                .Delay(TimeSpan.FromMilliseconds(150), cancellationToken)
+                .Delay(delay, cancellationToken)
                 .ConfigureAwait(true);
         }
         while (!cancellationToken.IsCancellationRequested);
@@ -671,7 +692,7 @@ public sealed partial class MainWindow
         => DevKit?.ExecuteRPC<int>
         (
             new XDRPCExecutionOptions(XDRPCMode.Title, _cbufAddText),
-            new object[] { 0, $"{commandString};" }
+            new object[] { 0, commandString }
         );
 
     private void Internal_GameSendServerCommand(params object[] parameters)
@@ -686,4 +707,9 @@ public sealed partial class MainWindow
 
     private void Internal_iPrintLnBold(string text, int client = -1)
         => Internal_GameSendServerCommand(client, 0, $"c \"{text}\"");
+
+    private List<string> GetClientNames()
+    {
+        throw new NotImplementedException();
+    }
 }

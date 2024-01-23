@@ -494,25 +494,25 @@
             <CheckBox x:Name="FxCheckBox" Content="Game Fx" IsEnabled="True" IsChecked="True" HorizontalAlignment="Left" Margin="492,19,0,0" VerticalAlignment="Top" Width="64" Checked="FxCheckBox_Checked" Unchecked="FxCheckBox_UnChecked"/>
 
             <Label Content="Name Changer:" HorizontalAlignment="Left" Margin="27,58,0,0" VerticalAlignment="Top" Width="113"/>
-            <Button x:Name="ChangeNameButton" IsEnabled="false" Content="Change" HorizontalAlignment="Left" Margin="256,83,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="ChangeNameButton_Click"/>
-            <TextBox x:Name="NameChangerTextBox" IsEnabled="false" MaxLength="32" HorizontalAlignment="Left" Margin="30,83,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="221" Height="20"/>
+            <Button x:Name="ChangeNameButton" IsEnabled="false" Content="Change" HorizontalAlignment="Left" Margin="271,83,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="ChangeNameButton_Click"/>
+            <TextBox x:Name="NameChangerTextBox" IsEnabled="false" MaxLength="34" HorizontalAlignment="Left" Margin="30,83,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="236" Height="20"/>
             <CheckBox x:Name="RealTimeNameChangeCheckBox" Content="Real Time Update" IsEnabled="false" HorizontalAlignment="Left" Margin="31,109,0,0" VerticalAlignment="Top" Width="122" Checked="RealTimeNameChangeCheckBox_Checked" Unchecked="RealTimeNameChangeCheckBox_Unchecked"/>
             <CheckBox x:Name="RainbowCheckBox" Content="Rainbow?" IsEnabled="false" HorizontalAlignment="Left" Margin="153,109,0,0" VerticalAlignment="Top" Width="75" Checked="RainbowCheckBox_Checked" Unchecked="RainbowCheckBox_Unchecked"/>
             <CheckBox x:Name="ButtonCheckBox" Content="Buttons?" IsEnabled="false" HorizontalAlignment="Left" Margin="231,109,0,0" VerticalAlignment="Top" Width="71" Checked="RainbowCheckBox_Checked" Unchecked="RainbowCheckBox_Unchecked"/>
 
             <Label Content="Clan Tag Changer:" HorizontalAlignment="Left" Margin="28,132,0,0" VerticalAlignment="Top" Width="113"/>
-            <Button x:Name="ChangeClanNameButton" IsEnabled="false" Content="Change" HorizontalAlignment="Left" Margin="257,158,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="ChangeClanNameButton_Click"/>
-            <TextBox x:Name="ClanNameChangerTextBox" IsEnabled="false" MaxLength="4" HorizontalAlignment="Left" Margin="31,158,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="221" Height="20"/>
+            <Button x:Name="ChangeClanNameButton" IsEnabled="false" Content="Change" HorizontalAlignment="Left" Margin="271,158,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="ChangeClanNameButton_Click"/>
+            <TextBox x:Name="ClanNameChangerTextBox" IsEnabled="false" MaxLength="4" HorizontalAlignment="Left" Margin="31,158,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="235" Height="20"/>
 
-            <Label Content="Set Presige:" HorizontalAlignment="Left" Margin="40,180,0,0" VerticalAlignment="Top"/>
+            <Label Content="Set Prestige:" HorizontalAlignment="Left" Margin="40,180,0,0" VerticalAlignment="Top"/>
             <CheckBox x:Name="LoopPrestigeCheckBox" Content="Loop?" HorizontalAlignment="Left" Margin="117,185,0,0" VerticalAlignment="Top" Width="55" Checked="LoopPrestigeCheckBox_Checked" Unchecked="LoopPrestigeCheckBox_Unchecked" IsEnabled="False"/>
             <xctk:IntegerUpDown x:Name="PrestigeIntegerUpDown" Margin="40,205,0,17" IsEnabled="False" HorizontalAlignment="Left" Width="62"/>
             <Button x:Name="ChangePrestigeButton" IsEnabled="false" Content="Change" HorizontalAlignment="Left" Margin="107,205,0,17" Width="75" Click="ChangePrestigeButton_Click"/>
 
-            <Label VerticalAlignment="Top" Margin="217,180,0,0" HorizontalAlignment="Left" Content="Set Level:"/>
-            <CheckBox x:Name="LoopLevelCheckBox" Content="Loop?" HorizontalAlignment="Left" Margin="296,185,0,0" VerticalAlignment="Top" Width="52" Checked="LoopLevelCheckBox_Checked" Unchecked="LoopLevelCheckBox_Unchecked" IsEnabled="False"/>
-            <xctk:IntegerUpDown x:Name="LevelIntegerUpDown" Margin="217,205,0,17" IsEnabled="False" HorizontalAlignment="Left" Width="62"/>
-            <Button x:Name="ChangeLevelButton" IsEnabled="false" Content="Change" HorizontalAlignment="Left" Margin="284,205,0,0" VerticalAlignment="Top" Height="20" Width="75" Click="ChangeLevelButton_Click"/>
+            <Label VerticalAlignment="Top" Margin="231,180,0,0" HorizontalAlignment="Left" Content="Set Level:"/>
+            <CheckBox x:Name="LoopLevelCheckBox" Content="Loop?" HorizontalAlignment="Left" Margin="310,185,0,0" VerticalAlignment="Top" Width="52" Checked="LoopLevelCheckBox_Checked" Unchecked="LoopLevelCheckBox_Unchecked" IsEnabled="False"/>
+            <xctk:IntegerUpDown x:Name="LevelIntegerUpDown" Margin="231,205,0,17" IsEnabled="False" HorizontalAlignment="Left" Width="62"/>
+            <Button x:Name="ChangeLevelButton" IsEnabled="false" Content="Change" HorizontalAlignment="Left" Margin="298,205,0,0" VerticalAlignment="Top" Height="20" Width="75" Click="ChangeLevelButton_Click"/>
 
             <Button x:Name="UnlockAllButton" Content="Unlock All" IsEnabled="False" HorizontalAlignment="Left" Margin="640,204,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="UnlockAllButton_Click"/>
             <Button x:Name="EndGameButton" Content="End Game" IsEnabled="False" HorizontalAlignment="Left" Margin="640,21,0,0" VerticalAlignment="Top" Click="EndGameButton_Click" Height="18" Width="113"/>

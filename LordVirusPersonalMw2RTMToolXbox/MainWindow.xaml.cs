@@ -60,12 +60,10 @@ public sealed partial class MainWindow : Window
 
     private void RainbowCheckBox_Checked(object sender, RoutedEventArgs e)
     {
-
     }
 
     private void RainbowCheckBox_Unchecked(object sender, RoutedEventArgs e)
     {
-
     }
 
     private void ButtonCheckBox_Checked(object sender, RoutedEventArgs e)
@@ -168,52 +166,82 @@ public sealed partial class MainWindow : Window
 
     private void ProModCheckBox_Checked(object sender, RoutedEventArgs e)
     {
-        Internal_CbufAddText("cg_fov 100;");
+        if (DevKit is null)
+            return;
+
+        Mw2GameFunctions.Cbuf_AddText(DevKit, ("cg_fov 100;"));
     }
 
     private void ProModCheckBox_UnChecked(object sender, RoutedEventArgs e)
     {
-        Internal_CbufAddText("reset cg_fov;");
+        if (DevKit is null)
+            return;
+
+        Mw2GameFunctions.Cbuf_AddText(DevKit, ("reset cg_fov;"));
     }
 
     private void CartoonCheckBox_Checked(object sender, RoutedEventArgs e)
     {
-        Internal_CbufAddText("r_fullbright 1;");
+        if (DevKit is null)
+            return;
+
+        Mw2GameFunctions.Cbuf_AddText(DevKit, ("r_fullbright 1;"));
     }
 
     private void CartoonCheckBox_UnChecked(object sender, RoutedEventArgs e)
     {
-        Internal_CbufAddText("r_fullbright 0;");
+        if (DevKit is null)
+            return;
+
+        Mw2GameFunctions.Cbuf_AddText(DevKit, ("r_fullbright 0;"));
     }
 
     private void ChromeCheckBox_Checked(object sender, RoutedEventArgs e)
     {
-        Internal_CbufAddText("r_specularmap 2;");
+        if (DevKit is null)
+            return;
+
+        Mw2GameFunctions.Cbuf_AddText(DevKit, ("r_specularmap 2;"));
     }
 
     private void ChromeCheckBox_UnChecked(object sender, RoutedEventArgs e)
     {
-        Internal_CbufAddText("r_specularmap 0;");
+        if (DevKit is null)
+            return;
+
+        Mw2GameFunctions.Cbuf_AddText(DevKit, ("r_specularmap 0;"));
     }
 
     private void UiDebugCheckBox_Checked(object sender, RoutedEventArgs e)
     {
-        Internal_CbufAddText("ui_debugmode 1;");
+        if (DevKit is null)
+            return;
+
+        Mw2GameFunctions.Cbuf_AddText(DevKit, ("ui_debugmode 1;"));
     }
 
     private void UiDebugCheckBox_UnChecked(object sender, RoutedEventArgs e)
     {
-        Internal_CbufAddText("ui_debugmode 0;");
+        if (DevKit is null)
+            return;
+
+        Mw2GameFunctions.Cbuf_AddText(DevKit, ("ui_debugmode 0;"));
     }
 
     private void FxCheckBox_Checked(object sender, RoutedEventArgs e)
     {
-        Internal_CbufAddText("fx_enable 1;");
+        if (DevKit is null)
+            return;
+
+        Mw2GameFunctions.Cbuf_AddText(DevKit, "fx_enable 1;");
     }
 
     private void FxCheckBox_UnChecked(object sender, RoutedEventArgs e)
     {
-        Internal_CbufAddText("fx_enable 0;");
+        if (DevKit is null)
+            return;
+
+        Mw2GameFunctions.Cbuf_AddText(DevKit, "fx_enable 0;");
     }
 
     private void ChangePrestigeButton_Click(object sender, RoutedEventArgs e)
@@ -254,14 +282,20 @@ public sealed partial class MainWindow : Window
 
     private void CBuffAddTextButton_Click(object sender, RoutedEventArgs e)
     {
-        Internal_CbufAddText(CBuffAddTextBox.Text);
+        if (DevKit is null)
+            return;
+
+        Mw2GameFunctions.Cbuf_AddText(DevKit!, CBuffAddTextBox.Text);
     }
 
     private void SendGameServerCommandButton_Click(object sender, RoutedEventArgs e)
     {
+        if (DevKit is null)
+            return;
+
         int client = -1; // TODO: Get current client from the drop box.
 
-        Internal_GameSendServerCommand(client, 0, SendGameServerCommandTextBox);
+        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, SendGameServerCommandTextBox);
     }
 
     private void EndGameButton_Click(object sender, RoutedEventArgs e)
@@ -271,21 +305,20 @@ public sealed partial class MainWindow : Window
         if (number is null)
             return;
 
-        Internal_CbufAddText($"cmd mr {number} -1 endround;");
+        if (DevKit is null)
+            return;
+
+        Mw2GameFunctions.Cbuf_AddText(DevKit!, $"cmd mr {number} -1 endround;");
     }
 
     private void UnlockAllButton_Click(object sender, RoutedEventArgs e)
     {
-#if DEBUG
-        //_ = Internal_UnlockAll();
+        var item = (G_ClientComboBoxItem)ClientComboBox.SelectedValue;
 
-        CurrentGameClients[0]?.InfiniteAmmo?.Toggle();
+        if (item is null || item.Client is null)
+            return;
 
-        //CurrentGameClients[0]?.InfiniteAmmo?.Disable();
-        //CurrentGameClients[0]?.Godmode?.Disable();
-        //CurrentGameClients[0]?.NoRecoil?.Disable();
-        //CurrentGameClients[0]?.ThermalRedboxes?.Disable();
-#endif
+        _ = Internal_UnlockAll(item.Client.ClientIndex);
     }
 
     private void ClientComboBox_DropDownOpened(object sender, System.EventArgs e)

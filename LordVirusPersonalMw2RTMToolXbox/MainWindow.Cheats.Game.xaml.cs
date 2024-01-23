@@ -7,9 +7,44 @@ using System.Threading.Tasks;
 using Fody;
 
 using XDevkit;
+using XDRPC;
 using XDRPCPlusPlus;
 
 namespace LordVirusPersonalMw2RTMToolXbox;
+
+internal static class Mw2GameFunctions
+{
+    private const UInt32 _cbufAddText = 0x82224990;
+    private const UInt32 _svGameSendServerCommand = 0x822548D8;
+    private const UInt32 _dvarGetBool = 0x8229EEE8;
+
+    internal static bool Cg_DvarGetBool(IXboxConsole xboxConsole, string commandString)
+        => xboxConsole.ExecuteRPC<bool>
+        (
+            new XDRPCExecutionOptions(XDRPCMode.Title, _dvarGetBool),
+            new object[] { commandString }
+        );
+
+    internal static void Cbuf_AddText(IXboxConsole xboxConsole, string commandString)
+        => xboxConsole.ExecuteRPC<int>
+        (
+            new XDRPCExecutionOptions(XDRPCMode.Title, _cbufAddText),
+            new object[] { 0, commandString }
+        );
+
+    internal static void Cg_GameSendServerCommand(IXboxConsole xboxConsole, params object[] parameters)
+        => xboxConsole.ExecuteRPC<int>
+        (
+            new XDRPCExecutionOptions(XDRPCMode.Title, _svGameSendServerCommand),
+            parameters
+        );
+
+    internal static void iPrintLn(IXboxConsole xboxConsole, string text, int client = -1)
+        => Cg_GameSendServerCommand(xboxConsole, client, 0, $"f \"{text}\"");
+
+    internal static void iPrintLnBold(IXboxConsole xboxConsole, string text, int client = -1)
+        => Cg_GameSendServerCommand(xboxConsole, client, 0, $"c \"{text}\"");
+}
 
 [ConfigureAwait(false)]
 internal sealed class G_Client
@@ -24,9 +59,6 @@ internal sealed class G_Client
 
     private static readonly byte[] _godModeOn =  [ 0x00, 0xFF, 0xFF, 0xFF ];
     private static readonly byte[] _godModeOff = [ 0x00, 0x00, 0x00, 0x64 ];
-
-    private static readonly byte[] _infiniteAmmoOn  = [ 0x0F, 0x00, 0x00, 0x00 ];
-    private static readonly byte[] _infiniteAmmoOff = [ 0x00, 0x00, 0x00, 0x64 ];
 
     private readonly IXboxConsole _xboxConsole;
     public IXboxConsole XboxConsole
@@ -74,6 +106,7 @@ internal sealed class G_Client
     }
 
     private readonly int _clientIndex;
+    public int ClientIndex => _clientIndex;
 
     public G_Client(IXboxConsole xbox, int clientIndex = 0)
     {
@@ -93,36 +126,20 @@ internal sealed class G_Client
     // TODO: Add magic bullets for clients.
     private void Internal_ConfigureCheatImplmentations()
     {
-        _redboxes           = new G_ClientCheat(_xboxConsole, _clientIndex, G_ClientStructOffsets.Redboxes, onByte: _redBoxesOn);
-        _thermalRedboxes    = new G_ClientCheat(_xboxConsole, _clientIndex, G_ClientStructOffsets.Redboxes, onByte: _thermalRedBoxesOn);
-        _godmode            = new G_ClientCheat(_xboxConsole, _clientIndex, G_ClientStructOffsets.Godmode, onBytes: _godModeOn, offBytes: _godModeOff);
-        _noRecoil           = new G_ClientCheat(_xboxConsole, _clientIndex, G_ClientStructOffsets.NoRecoil, onByte: _noRecoilOn);
-        _noClip             = new G_ClientCheat(_xboxConsole, _clientIndex, G_ClientStructOffsets.MovementFlag, onByte: _noClipOn);
-        _ufoMode            = new G_ClientCheat(_xboxConsole, _clientIndex, G_ClientStructOffsets.MovementFlag, onByte: _ufoModeOn);
+        _redboxes        = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.Redboxes, _clientIndex, onByte: _redBoxesOn, cheatName: "Red Boxes");
+        _thermalRedboxes = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.Redboxes, _clientIndex, onByte: _thermalRedBoxesOn, cheatName: "Thermal Red Boxes");
+        _godmode         = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.Godmode, _clientIndex, onBytes: _godModeOn, offBytes: _godModeOff, cheatName: "God Mode");
+        _noRecoil        = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.NoRecoil, _clientIndex, onByte: _noRecoilOn, cheatName: "No Recoil");
+        _noClip          = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.MovementFlag, _clientIndex, onByte: _noClipOn, cheatName: "No Clip");
+        _ufoMode         = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.MovementFlag, _clientIndex, onByte: _ufoModeOn, cheatName: "Ufo Mode");
 
         //_primaryAkimbo = new G_ClientCheat(_xboxConsole, _clientIndex, G_ClientStructOffsets.PrimeAkimbo);
         //_secondaryAkimbo = new G_ClientCheat(_xboxConsole, _clientIndex, G_ClientStructOffsets.SecondaryAkimbo); // Freezes xbox
 
-        // TODO: Label these for what weapon slot they are giving inf ammo too.
-        _infAmmo1 = new G_ClientCheat(_xboxConsole, _clientIndex, G_ClientStructOffsets.InfAmmo1, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
-        _infAmmo2 = new G_ClientCheat(_xboxConsole, _clientIndex, G_ClientStructOffsets.InfAmmo2, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
-        _infAmmo3 = new G_ClientCheat(_xboxConsole, _clientIndex, G_ClientStructOffsets.InfAmmo3, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
-        _infAmmo4 = new G_ClientCheat(_xboxConsole, _clientIndex, G_ClientStructOffsets.InfAmmo4, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
-        _infAmmo5 = new G_ClientCheat(_xboxConsole, _clientIndex, G_ClientStructOffsets.InfAmmo5, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
-        _infAmmo6 = new G_ClientCheat(_xboxConsole, _clientIndex, G_ClientStructOffsets.InfAmmo6, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
-
-        _infiniteAmmo = new G_ClientInfiniteAmmo
-        (
-            _infAmmo1!,
-            _infAmmo2!,
-            _infAmmo3!,
-            _infAmmo4!,
-            _infAmmo5!,
-            _infAmmo6!
-        );
+        _infiniteAmmo = new G_ClientInfiniteAmmo(_xboxConsole, _clientIndex);
 
 #if DEBUG
-        DebugCheat = new G_ClientCheat(_xboxConsole, _clientIndex, G_ClientStructOffsets.DebugOffset);
+        DebugCheat = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.DebugOffset, _clientIndex);
 #endif
     }
 
@@ -198,33 +215,53 @@ internal class G_ClientCheat : IGameCheat
     private G_ClientStructOffsets _cheatAddress;
 
     private bool _enabled = false;
+
+    private readonly string? _cheatName;
     private readonly int _clientNumber = 0;
     private readonly uint _byteCount = 1;
 
     private readonly byte[] _onBytes;
     private readonly byte[] _offBytes;
 
-    public G_ClientCheat(IXboxConsole xboxConsole, int clientNumber, G_ClientStructOffsets cheatAddress, byte onByte = 0x01, byte offByte = 0x00)
+    public G_ClientCheat
+    (
+        IXboxConsole xboxConsole,
+        G_ClientStructOffsets cheatAddress,
+        int clientNumber, 
+        byte onByte = 0x01, 
+        byte offByte = 0x00,
+        string? cheatName = null
+    )
     {
         _xboxConsole = xboxConsole;
         _cheatAddress = cheatAddress;
         _clientNumber = clientNumber;
+        _cheatName = cheatName;
 
         _onBytes = [ onByte ];
         _offBytes = [ offByte ];
     }
 
-    public G_ClientCheat(IXboxConsole xboxConsole, int clientNumber, G_ClientStructOffsets cheatAddress, byte[] onBytes, byte[] offBytes)
+    public G_ClientCheat
+    (
+        IXboxConsole xboxConsole,
+        G_ClientStructOffsets cheatAddress,
+        int clientNumber, 
+        byte[] onBytes, 
+        byte[] offBytes,
+        string? cheatName = null
+    )
     {
-        _xboxConsole = xboxConsole;
-        _cheatAddress = cheatAddress;
-        _clientNumber = clientNumber;
-
         if (onBytes.Length != offBytes.Length)
             throw new ArgumentOutOfRangeException("Error: onBytes and offBytes must have the same number of bytes.");
 
         _byteCount = (uint)onBytes.Length;
 
+        _xboxConsole = xboxConsole;
+        _cheatAddress = cheatAddress;
+        _clientNumber = clientNumber;
+        _cheatName = cheatName;
+        
         _onBytes = onBytes;
         _offBytes = offBytes;
     }
@@ -239,6 +276,9 @@ internal class G_ClientCheat : IGameCheat
                     CorrectedCheatAddress, 
                     _onBytes
                 );
+
+            if (_cheatName is not null)
+                Mw2GameFunctions.iPrintLn(_xboxConsole, $"{_cheatName}^7: ^2Enabled", _clientNumber);
         }
 
         catch
@@ -259,6 +299,9 @@ internal class G_ClientCheat : IGameCheat
                     CorrectedCheatAddress,
                     _offBytes
                 );
+
+            if (_cheatName is not null)
+                Mw2GameFunctions.iPrintLn(_xboxConsole, $"{_cheatName}^7: ^1Disabled", _clientNumber);
         }
 
         catch
@@ -309,6 +352,12 @@ internal class G_ClientInfiniteAmmo : IGameCheat
     private CancellationTokenSource? _updaterCancellationTokenSource = new CancellationTokenSource();
     private bool _enabled = false;
 
+    private static readonly byte[] _infiniteAmmoOn = [0x0F, 0x00, 0x00, 0x00];
+    private static readonly byte[] _infiniteAmmoOff = [0x00, 0x00, 0x00, 0x64];
+
+    private readonly int _clientIndex = 0;
+
+    private readonly IXboxConsole _xboxConsole;
     private readonly IGameCheat _infAmmo1;
     private readonly IGameCheat _infAmmo2;
     private readonly IGameCheat _infAmmo3;
@@ -316,26 +365,27 @@ internal class G_ClientInfiniteAmmo : IGameCheat
     private readonly IGameCheat _infAmmo5;
     private readonly IGameCheat _infAmmo6;
 
-    public G_ClientInfiniteAmmo(
-        IGameCheat infAmmo1,
-        IGameCheat infAmmo2,
-        IGameCheat infAmmo3,
-        IGameCheat infAmmo4,
-        IGameCheat infAmmo5,
-        IGameCheat infAmmo6)
+    public G_ClientInfiniteAmmo(IXboxConsole xboxConsole, int clientIndex)
     {
-        _infAmmo1 = infAmmo1;
-        _infAmmo2 = infAmmo2;
-        _infAmmo3 = infAmmo3;
-        _infAmmo4 = infAmmo4;
-        _infAmmo5 = infAmmo5;
-        _infAmmo6 = infAmmo6;
+        _xboxConsole = xboxConsole;
+
+        _clientIndex = clientIndex;
+
+        // TODO: Label these for what weapon slot they are giving inf ammo too.
+        _infAmmo1 = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.InfAmmo1, _clientIndex, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
+        _infAmmo2 = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.InfAmmo2, _clientIndex, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
+        _infAmmo3 = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.InfAmmo3, _clientIndex, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
+        _infAmmo4 = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.InfAmmo4, _clientIndex, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
+        _infAmmo5 = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.InfAmmo5, _clientIndex, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
+        _infAmmo6 = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.InfAmmo6, _clientIndex, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
     }
 
     public async Task UpdateInfAmmo(CancellationToken cancellationToken)
     {
         try
         {
+            Mw2GameFunctions.iPrintLn(_xboxConsole, $"Infinite Ammo^7: ^2Enabled", _clientIndex);
+
             do
             {
                 _infAmmo1.Enable();
@@ -359,6 +409,8 @@ internal class G_ClientInfiniteAmmo : IGameCheat
             _infAmmo4.Disable();
             _infAmmo5.Disable();
             _infAmmo6.Disable();
+
+            Mw2GameFunctions.iPrintLn(_xboxConsole, $"Infinite Ammo^7: ^1Disabled", _clientIndex);
         }
     }
 

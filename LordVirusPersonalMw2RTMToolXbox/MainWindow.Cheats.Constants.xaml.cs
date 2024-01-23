@@ -66,9 +66,6 @@ internal enum G_ClientStructOffsets : uint
 
 public sealed partial class MainWindow
 {
-    private const UInt32 _cbufAddText = 0x82224990;
-    private const UInt32 _svGameSendServerCommand = 0x822548D8;
-    private const UInt32 _dvarGetBool = 0x8229EEE8;
     private const UInt32 _nonHostEndGame = 0x826237E0;
 
     private const UInt32 _prestigeAddress = 0x831A0DD4;

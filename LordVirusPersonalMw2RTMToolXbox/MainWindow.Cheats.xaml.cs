@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.Windows;
 
 using XDRPC;
@@ -26,118 +26,7 @@ public sealed partial class MainWindow
     private CancellationTokenSource? LevelCancellationTokenSource = null;
     private CancellationTokenSource? PrestigeCancellationTokenSource = null;
 
-    private const byte _maxNameInputLength = 34;
-
-    private const int _maxPrestige = 11;
-    private const int _minPrestige = 0;
-
-    private const int _maxLevel = 70;
-    private const int _minLevel = 1;
-
-    private static readonly int[] _levelTable = 
-    {
-        0,   
-        500, 
-        1700,
-        3600,
-        6200,
-        9500,
-        13500,
-        18200,
-        23600,
-        29700,
-        36500,
-        44300,
-        53100,
-        62900,
-        73700,
-        85500,
-        98300,
-        112100,
-        126900,
-        142700,
-        159500,
-        177300,
-        196100,
-        215900,
-        236700,
-        258500,
-        281300,
-        305100,
-        329900,
-        355700,
-        382700,
-        410900,
-        440300,
-        470900,
-        502700,
-        535700,
-        569900,
-        605300,
-        641900,
-        679700,
-        718700,
-        758900,
-        800300,
-        842900,
-        886700,
-        931700,
-        977900,
-        1025300,
-        1073900,
-        1123700,
-        1175000,
-        1227800,
-        1282100,
-        1337900,
-        1395200,
-        1454000,
-        1514300,
-        1576100,
-        1639400,
-        1704200,
-        1770500,
-        1838300,
-        1907600,
-        1978400,
-        2050700,
-        2124500,
-        2199800,
-        2276600,
-        2354900,
-        2434700,
-        2516000
-    };
-
-    private static readonly char[,] _buttonCodes = new char[8, 2]
-    {
-        { '', '' }, 
-        { '', '' }, 
-        { '', '' }, 
-        { '', '' },
-        { '', '' },
-        { '', '' },
-        { '', '' },
-        { '', '' }
-    };
-
-    private static readonly char[] _buttonCharMap = new char[14]
-    {
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        ''
-    };
+    private G_Client?[] CurrentGameClients = new G_Client?[_maxClientCount]; 
 
     private bool InGame
     {
@@ -195,24 +84,15 @@ public sealed partial class MainWindow
             EndGameButton.IsEnabled = true;
 
             Internal_UpdateCurrentUserInfo();
-            Internal_CbufAddText("loc_warningsUI 0; loc_warnings 0;");
-
+            Internal_CbufAddText("loc_warningsUI 0; loc_warnings 0;cg_blood 1; cg_bloodLimit 0;");
 
             MessageBox.Show
             (
-                $"{Internal_IsLocalClientInGame()}",
-                "In game?",
+                "Successfuly Connected!",
+                "Connection",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information
             );
-
-            //MessageBox.Show
-            //(
-            //    "Successfuly Connected!",
-            //    "Connection",
-            //    MessageBoxButton.OK,
-            //    MessageBoxImage.Information
-            //);
         }
 
         catch (Exception ex)
@@ -236,14 +116,15 @@ public sealed partial class MainWindow
         }
     }
 
-    private bool Internal_IsLocalClientInGame(int client = 0)
-    {
-        return DevKit?.ExecuteRPC<bool>
-        (
-            new XDRPCExecutionOptions(XDRPCMode.Title, 0x82182990),
-            new object[] { client }
-        ) ?? false;
-    }
+    // TODO: Get this working!
+    //private bool Internal_IsLocalClientInGame(int client = 0)
+    //{
+    //    return DevKit?.ExecuteRPC<bool>
+    //    (
+    //        new XDRPCExecutionOptions(XDRPCMode.Title, 0x82182990),
+    //        new object[] { client }
+    //    ) ?? false;
+    //}
 
     private void Internal_UpdateCurrentUserInfo()
     {
@@ -287,6 +168,17 @@ public sealed partial class MainWindow
         Span<byte> initClanByteSpan = DevKit?.ReadBytes(_clanAddress, 4);
         initClanByteSpan = initClanByteSpan.TrimEnd((byte)0x00);
         ClanNameChangerTextBox.Text = Encoding.ASCII.GetString(initClanByteSpan);
+    }
+
+    private void Internal_RefreshClients()
+    {
+        if (DevKit is null)
+            return;
+
+        for (int clientIndex = 0; clientIndex < _maxClientCount; clientIndex++) 
+        {
+            CurrentGameClients[clientIndex] = new G_Client(DevKit!, clientIndex);
+        }
     }
 
     private async Task Internal_UnlockAll(int client = -1)
@@ -558,30 +450,6 @@ public sealed partial class MainWindow
         return newNameBuffer;
     }
 
-    //private void Internal_AddButtons(ReadOnlySpan<char> name, out ReadOnlySpan<char> newName)
-    //{
-    //    Span<char> tempName = stackalloc char[name.Length + 2];
-
-    //    int buttonIndex = _random.Next(8);
-
-    //    byte index = 0;
-    //    tempName[index] = _buttonCodes[buttonIndex, 0]; index++;
-    //    name.CopyTo(tempName[index..]); index += (byte)name.Length;
-    //    tempName[index] = _buttonCodes[buttonIndex, 1];
-
-    //    newName = tempName.ToArray();
-    //}
-
-    //private void Internal_AddColors(ReadOnlySpan<char> name, out ReadOnlySpan<char> newName)
-    //{
-    //    Span<char> tempName = stackalloc char[name.Length + 2];
-
-    //    tempName[0] = '^';
-    //    tempName[1] = (char)(_random.Next(6) + 48);
-    //    name.CopyTo(tempName[2..]);
-    //    newName = tempName.ToArray();
-    //}
-
     private void Internal_ParseFlashingCodes(ReadOnlySpan<char> name, out ReadOnlySpan<char> newName)
     {
         Span<char> tempName = stackalloc char[name.Length];
@@ -707,9 +575,4 @@ public sealed partial class MainWindow
 
     private void Internal_iPrintLnBold(string text, int client = -1)
         => Internal_GameSendServerCommand(client, 0, $"c \"{text}\"");
-
-    private List<string> GetClientNames()
-    {
-        throw new NotImplementedException();
-    }
 }

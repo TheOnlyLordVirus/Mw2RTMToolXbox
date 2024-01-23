@@ -525,8 +525,8 @@
             <Button x:Name="SendGameServerCommandButton" IsEnabled="false" Content="Send" HorizontalAlignment="Left" Margin="640,153,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="SendGameServerCommandButton_Click"/>
             <TextBox x:Name="SendGameServerCommandTextBox" IsEnabled="false" MaxLength="32" HorizontalAlignment="Left" Margin="414,153,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="221" Height="20"/>
 
-            <ComboBox IsEnabled="false" HorizontalAlignment="Left" Margin="414,204,0,0" VerticalAlignment="Top" Width="221" Height="20">
-                <ListBoxItem Content="Test Client"/>
+            <ComboBox x:Name="ClientComboBox" IsEnabled="false" HorizontalAlignment="Left" Margin="414,204,0,0" VerticalAlignment="Top" Width="221" Height="20" DropDownOpened="ClientComboBox_DropDownOpened">
+
             </ComboBox>
         </Grid>
     </Grid>

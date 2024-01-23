@@ -276,6 +276,22 @@ public sealed partial class MainWindow : Window
 
     private void UnlockAllButton_Click(object sender, RoutedEventArgs e)
     {
-        _ = Internal_UnlockAll();
+#if DEBUG
+        //_ = Internal_UnlockAll();
+
+        Internal_RefreshClients();
+
+        CurrentGameClients[0]?.InfiniteAmmo?.Disable();
+        CurrentGameClients[0]?.Godmode?.Disable();
+        CurrentGameClients[0]?.NoRecoil?.Disable();
+        CurrentGameClients[0]?.ThermalRedboxes?.Disable();
+#endif
+    }
+
+    private void ClientComboBox_DropDownOpened(object sender, System.EventArgs e)
+    {
+        // Refresh client list
+
+        Internal_RefreshClients();
     }
 }

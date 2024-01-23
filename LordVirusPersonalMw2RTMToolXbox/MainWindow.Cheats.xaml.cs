@@ -4,13 +4,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 using XDRPCPlusPlus;
 using XDevkit;
 
 using Fody;
-using System.Windows.Controls;
-using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace LordVirusPersonalMw2RTMToolXbox;
 
@@ -22,14 +21,14 @@ public sealed partial class MainWindow
         public G_Client? Client;
     }
 
-    public IXboxManager? XboxManager = null;
-    public IXboxConsole? DevKit = null;
+    private IXboxManager? XboxManager = null;
+    private IXboxConsole? DevKit = null;
 
     private Random _random = new Random();
 
-    private CancellationTokenSource? NameChangerCancellationTokenSource = null;
-    private CancellationTokenSource? LevelCancellationTokenSource = null;
-    private CancellationTokenSource? PrestigeCancellationTokenSource = null;
+    private CancellationTokenSource? _nameChangerCancellationTokenSource = null;
+    private CancellationTokenSource? _levelCancellationTokenSource = null;
+    private CancellationTokenSource? _prestigeCancellationTokenSource = null;
 
     private G_Client?[] CurrentGameClients = new G_Client?[_maxClientCount]; 
 
@@ -107,14 +106,14 @@ public sealed partial class MainWindow
 
         catch (Exception ex)
         {
-            NameChangerCancellationTokenSource?.Cancel();
-            NameChangerCancellationTokenSource = null;
+            _nameChangerCancellationTokenSource?.Cancel();
+            _nameChangerCancellationTokenSource = null;
 
-            PrestigeCancellationTokenSource?.Cancel();
-            PrestigeCancellationTokenSource = null;
+            _prestigeCancellationTokenSource?.Cancel();
+            _prestigeCancellationTokenSource = null;
 
-            LevelCancellationTokenSource?.Cancel();
-            LevelCancellationTokenSource = null;
+            _levelCancellationTokenSource?.Cancel();
+            _levelCancellationTokenSource = null;
 
             MessageBox.Show
             (
@@ -356,8 +355,8 @@ public sealed partial class MainWindow
     {
         if(toggleValue)
         {
-            NameChangerCancellationTokenSource = new CancellationTokenSource();
-            _ = Internal_AutoUpdateName(NameChangerCancellationTokenSource.Token);
+            _nameChangerCancellationTokenSource = new CancellationTokenSource();
+            _ = Internal_AutoUpdateName(_nameChangerCancellationTokenSource.Token);
 
             ChangeNameButton.IsEnabled = false;
             RainbowCheckBox.IsEnabled = true;
@@ -366,11 +365,11 @@ public sealed partial class MainWindow
             return;
         }
 
-        if (NameChangerCancellationTokenSource is null)
+        if (_nameChangerCancellationTokenSource is null)
             return;
 
-        NameChangerCancellationTokenSource.Cancel();
-        NameChangerCancellationTokenSource = null;
+        _nameChangerCancellationTokenSource.Cancel();
+        _nameChangerCancellationTokenSource = null;
 
         ChangeNameButton.IsEnabled = true;
 
@@ -387,8 +386,8 @@ public sealed partial class MainWindow
     {
         if (toggleValue)
         {
-            LevelCancellationTokenSource = new CancellationTokenSource();
-            _ = Internal_LoopLevels(LevelCancellationTokenSource.Token);
+            _levelCancellationTokenSource = new CancellationTokenSource();
+            _ = Internal_LoopLevels(_levelCancellationTokenSource.Token);
 
             LevelIntegerUpDown.IsEnabled = false;
             ChangeLevelButton.IsEnabled = false;
@@ -396,11 +395,11 @@ public sealed partial class MainWindow
             return;
         }
 
-        if (LevelCancellationTokenSource is null)
+        if (_levelCancellationTokenSource is null)
             return;
 
-        LevelCancellationTokenSource.Cancel();
-        LevelCancellationTokenSource = null;
+        _levelCancellationTokenSource.Cancel();
+        _levelCancellationTokenSource = null;
 
         LevelIntegerUpDown.IsEnabled = true;
         ChangeLevelButton.IsEnabled = true;
@@ -410,8 +409,8 @@ public sealed partial class MainWindow
     {
         if (toggleValue)
         {
-            PrestigeCancellationTokenSource = new CancellationTokenSource();
-            _ = Internal_LoopPrestiges(PrestigeCancellationTokenSource.Token);
+            _prestigeCancellationTokenSource = new CancellationTokenSource();
+            _ = Internal_LoopPrestiges(_prestigeCancellationTokenSource.Token);
 
             PrestigeIntegerUpDown.IsEnabled = false;
             ChangePrestigeButton.IsEnabled = false;
@@ -419,11 +418,11 @@ public sealed partial class MainWindow
             return;
         }
 
-        if (PrestigeCancellationTokenSource is null)
+        if (_prestigeCancellationTokenSource is null)
             return;
 
-        PrestigeCancellationTokenSource.Cancel();
-        PrestigeCancellationTokenSource = null;
+        _prestigeCancellationTokenSource.Cancel();
+        _prestigeCancellationTokenSource = null;
 
         PrestigeIntegerUpDown.IsEnabled = true;
         ChangePrestigeButton.IsEnabled = true;

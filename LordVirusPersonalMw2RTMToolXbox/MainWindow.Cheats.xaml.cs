@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using System.Windows;
 
 using XDRPC;
@@ -83,8 +82,10 @@ public sealed partial class MainWindow
             UnlockAllButton.IsEnabled = true;
             EndGameButton.IsEnabled = true;
 
+            ClientComboBox.IsEnabled = true;
+
             Internal_UpdateCurrentUserInfo();
-            Internal_CbufAddText("loc_warningsUI 0; loc_warnings 0;cg_blood 1; cg_bloodLimit 0;");
+            Internal_CbufAddText("loc_warningsUI 0; loc_warnings 0; cg_blood 0; cg_bloodLimit 0;");
 
             MessageBox.Show
             (

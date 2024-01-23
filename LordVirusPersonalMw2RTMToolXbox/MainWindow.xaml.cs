@@ -279,12 +279,12 @@ public sealed partial class MainWindow : Window
 #if DEBUG
         //_ = Internal_UnlockAll();
 
-        Internal_RefreshClients();
+        CurrentGameClients[0]?.InfiniteAmmo?.Toggle();
 
-        CurrentGameClients[0]?.InfiniteAmmo?.Disable();
-        CurrentGameClients[0]?.Godmode?.Disable();
-        CurrentGameClients[0]?.NoRecoil?.Disable();
-        CurrentGameClients[0]?.ThermalRedboxes?.Disable();
+        //CurrentGameClients[0]?.InfiniteAmmo?.Disable();
+        //CurrentGameClients[0]?.Godmode?.Disable();
+        //CurrentGameClients[0]?.NoRecoil?.Disable();
+        //CurrentGameClients[0]?.ThermalRedboxes?.Disable();
 #endif
     }
 

@@ -2,6 +2,41 @@
 
 namespace LordVirusPersonalMw2RTMToolXbox;
 
+//gclient_s
+//{
+//    playerState_s ps; // 0x0
+//    clientSession_s sess; // 0x3190
+//    int spectatorClient; // 0x341C
+//    int mFlags; // 0x3420
+//    char padding[4]; // 0x3424
+//    int lastCmdTime; // 0x3428
+//    int buttons; // 0x342C
+//    int oldButtons; // 0x3430
+//    int latched_buttons; // 0x3434
+//    int buttonsSinceLastFrame; // 0x3438
+//    vec3 oldOrigin; // 0x343C
+//    float fGunPitch; // 0x3448
+//    float fGunYaw; // 0x344C
+//    char padding2[8]; // 0x3450
+//    vec3 damage_from; // 0x3458
+//    int damage_fromWorld; // 0x3464
+//    int accurateCount; // 0x3468
+//    int accuracy_shots; // 0x346C
+//    int accuracy_hits; // 0x3470
+//    int inactivityTime; // 0x3474
+//    int inactivityWarning; // 0x3478
+//    int lastVoiceTime; // 0x347C
+//    int switchTeamTime; // 0x3480
+//    float currentAimSpreadScale; // 0x3484
+//    float prevLinkedInvQuat[4]; // 0x3488
+//    bool link_rotationMovesEyePos; // 0x3498
+//    bool link_doCollision; // 0x3499
+//    bool link_useTagAnglesForViewAngles; // 0x349A
+//    bool link_useBaseAnglesForViewClamp; // 0x349B
+//    float linkAnglesFrac; // 0x349C
+//    viewClampState link_viewClamp; // 0x34A0
+//}
+
 internal enum G_ClientStructOffsets : uint
 {
     Array_BaseAddress = 0x830CBF80,
@@ -10,12 +45,12 @@ internal enum G_ClientStructOffsets : uint
     Name = 0x3290,
     Godmode = 0x3228,
     NoRecoil = 0x2BE,
-    MovementFlag = 0x3290,
-    PrimeAkimbo = 0x267,
-    SecondaryAkimbo = 0x25D,
-    AllPerks = 0x428,
-    ModGun = 0x3243,
-    Teleport = 0x24,
+    MovementFlag = 0x3423,
+    //PrimeAkimbo = 0x267,
+    //SecondaryAkimbo = 0x25D,
+    //AllPerks = 0x428,
+    //ModGun = 0x3243,
+    //Teleport = 0x24,
     InfAmmo1 = 0x2EC,
     InfAmmo2 = 0x2DC,
     InfAmmo3 = 0x354,
@@ -48,16 +83,16 @@ public sealed partial class MainWindow
     private const UInt32 _laserAddress = 0x82104093;
 
     private const UInt32 _redBoxAddress = 0x820F4234;
-    private static readonly byte[] _redBoxOn = new byte[] { 0x60, 0x00, 0x00, 0x00 }; // NOP
-    private static readonly byte[] _redBoxOff = new byte[] { 0x41, 0x9A, 0x00, 0x0C };
+    private static readonly byte[] _redBoxOn = [0x60, 0x00, 0x00, 0x00]; // NOP
+    private static readonly byte[] _redBoxOff = [0x41, 0x9A, 0x00, 0x0C];
 
     private const UInt32 _noRecoilAddress = 0x820E31F8;
-    private static readonly byte[] _noRecoilOn = new byte[] { 0x4E, 0x80, 0x00, 0x20 };
-    private static readonly byte[] _noRecoilOff = new byte[] { 0x7D, 0x88, 0x02, 0xA6 };
+    private static readonly byte[] _noRecoilOn = [0x4E, 0x80, 0x00, 0x20];
+    private static readonly byte[] _noRecoilOff = [0x7D, 0x88, 0x02, 0xA6];
 
     private const UInt32 _thermalAddress = 0x82127C98;
-    private static readonly byte[] _thermalOn = new byte[] { 0x38, 0x60, 0x00, 0x01, 0x4E, 0x80, 0x00, 0x20 };
-    private static readonly byte[] _thermalOff = new byte[] { 0x7D, 0x88, 0x02, 0xA6, 0x91, 0x81, 0xFF, 0xF8 };
+    private static readonly byte[] _thermalOn = [0x38, 0x60, 0x00, 0x01, 0x4E, 0x80, 0x00, 0x20];
+    private static readonly byte[] _thermalOff = [0x7D, 0x88, 0x02, 0xA6, 0x91, 0x81, 0xFF, 0xF8];
 
     private const byte _maxNameInputLength = 34;
 
@@ -144,7 +179,7 @@ public sealed partial class MainWindow
         2516000
     };
 
-    private static readonly char[] _buttonCharMap = new char[14]
+    private static readonly char[] _buttonCharMap = 
     {
         '',
         '',

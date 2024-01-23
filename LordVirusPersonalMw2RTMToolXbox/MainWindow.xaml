@@ -526,7 +526,7 @@
             <TextBox x:Name="SendGameServerCommandTextBox" IsEnabled="false" MaxLength="32" HorizontalAlignment="Left" Margin="414,153,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="221" Height="20"/>
 
             <ComboBox x:Name="ClientComboBox" IsEnabled="false" HorizontalAlignment="Left" Margin="414,204,0,0" VerticalAlignment="Top" Width="221" Height="20" DropDownOpened="ClientComboBox_DropDownOpened">
-
+                <ComboBoxItem Content="Debug Item"> </ComboBoxItem>
             </ComboBox>
         </Grid>
     </Grid>

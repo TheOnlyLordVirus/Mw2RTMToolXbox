@@ -93,7 +93,7 @@ public sealed partial class MainWindow
             ClientComboBox.IsEnabled = true;
 
             Internal_UpdateCurrentUserInfo();
-            Mw2GameFunctions.Cg_DvarGetBool(DevKit!, "loc_warningsUI 0; loc_warnings 0; cg_blood 0; cg_bloodLimit 1;");
+            Mw2GameFunctions.Cbuf_AddText(DevKit!, "loc_warningsUI 0; loc_warnings 0; cg_blood 0; cg_bloodLimit 1;");
 
             MessageBox.Show
             (
@@ -124,16 +124,6 @@ public sealed partial class MainWindow
             );
         }
     }
-
-    // TODO: Get this working!
-    //private bool Internal_IsLocalClientInGame(int client = 0)
-    //{
-    //    return DevKit?.ExecuteRPC<bool>
-    //    (
-    //        new XDRPCExecutionOptions(XDRPCMode.Title, 0x82182990),
-    //        new object[] { client }
-    //    ) ?? false;
-    //}
 
     private void Internal_UpdateCurrentUserInfo()
     {

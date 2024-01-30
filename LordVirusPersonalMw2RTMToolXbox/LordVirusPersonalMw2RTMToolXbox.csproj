@@ -23,6 +23,14 @@
 			<Generator>MSBuild:Compile</Generator>
 			<SubType>Designer</SubType>
 		</Page>
+		<Compile Include="lib\MW2\G_Client.cs" />
+		<Compile Include="lib\MW2\G_ClientCheat.cs" />
+		<Compile Include="lib\MW2\G_ClientComboBoxItem.cs" />
+		<Compile Include="lib\MW2\G_ClientLoopingCheat.cs" />
+		<Compile Include="lib\MW2\G_ClientStructOffsets.cs" />
+		<Compile Include="lib\MW2\IGameCheat.cs" />
+		<Compile Include="lib\MW2\Mw2GameFunctions.cs" />
+		<Compile Include="lib\MW2\Mw2XboxLibConstants.cs" />
 		<Compile Include="lib\XDRPC\MarshalingUtils.cs" />
 		<Compile Include="lib\XDRPC\XDRPCArgumentInfo.cs" />
 		<Compile Include="lib\XDRPC\XDRPCException.cs" />
@@ -55,10 +63,6 @@
 			<DependentUpon>MainWindow.xaml</DependentUpon>
 			<SubType>Code</SubType>
 		</Compile>
-    <Compile Include="MainWindow.Cheats.Game.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
 		<Compile Include="MainWindow.Cheats.Constants.xaml.cs">
 			<DependentUpon>MainWindow.xaml</DependentUpon>
 			<SubType>Code</SubType>

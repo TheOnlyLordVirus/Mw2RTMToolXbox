@@ -3,6 +3,8 @@ using System.Windows.Input;
 
 using XDRPCPlusPlus;
 
+using LordVirusMw2XboxLib;
+
 namespace LordVirusPersonalMw2RTMToolXbox;
 
 /// <summary>
@@ -40,12 +42,18 @@ public sealed partial class MainWindow : Window
 
     private void ChangeClanNameButton_Click(object sender, RoutedEventArgs e)
     {
-        Internal_SetClanName(ClanNameChangerTextBox.Text);
+        if (DevKit is null)
+            return;
+
+        Mw2GameFunctions.SetClanName(DevKit!, ClanNameChangerTextBox.Text);
     }
 
     private void ChangeNameButton_Click(object sender, RoutedEventArgs e)
     {
-        Internal_SetName(NameChangerTextBox.Text);
+        if (DevKit is null)
+            return;
+
+        Mw2GameFunctions.SetName(DevKit!, NameChangerTextBox.Text);
     }
 
     private void RealTimeNameChangeCheckBox_Checked(object sender, RoutedEventArgs e)
@@ -249,7 +257,10 @@ public sealed partial class MainWindow : Window
         if (PrestigeIntegerUpDown.Value is null)
             return;
 
-        Internal_SetPrestige((int)PrestigeIntegerUpDown.Value);
+        if (DevKit is null)
+            return;
+
+        Mw2GameFunctions.SetPrestige(DevKit!, (int)PrestigeIntegerUpDown.Value);
     }
 
     private void LoopPrestigeCheckBox_Checked(object sender, RoutedEventArgs e)
@@ -267,7 +278,10 @@ public sealed partial class MainWindow : Window
         if (LevelIntegerUpDown.Value is null)
             return;
 
-        Internal_SetLevel((int)LevelIntegerUpDown.Value);
+        if (DevKit is null)
+            return;
+
+        Mw2GameFunctions.SetLevel(DevKit, (int)LevelIntegerUpDown.Value);
     }
 
     private void LoopLevelCheckBox_Checked(object sender, RoutedEventArgs e)
@@ -300,31 +314,26 @@ public sealed partial class MainWindow : Window
 
     private void EndGameButton_Click(object sender, RoutedEventArgs e)
     {
-        int? number = DevKit?.ReadInt32(_nonHostEndGame);
-
-        if (number is null)
-            return;
-
         if (DevKit is null)
             return;
 
-        Mw2GameFunctions.Cbuf_AddText(DevKit!, $"cmd mr {number} -1 endround;");
+        Mw2GameFunctions.EndGame(DevKit!);
     }
 
     private void UnlockAllButton_Click(object sender, RoutedEventArgs e)
     {
-        var item = (G_ClientComboBoxItem)ClientComboBox.SelectedValue;
-
-        if (item is null || item.Client is null)
+        if (SelectedClient is null)
             return;
 
-        _ = Internal_UnlockAll(item.Client.ClientIndex);
+        if (unlockAllTasks[SelectedClient.ClientIndex] is not null &&
+            !(unlockAllTasks[SelectedClient.ClientIndex]!.IsCompleted))
+            return;
+
+        unlockAllTasks[SelectedClient.ClientIndex] = SelectedClient.UnlockAll();
     }
 
     private void ClientComboBox_DropDownOpened(object sender, System.EventArgs e)
     {
-        // Refresh client list
-
         Internal_RefreshClients();
     }
 }

@@ -4,23 +4,19 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
+
+using Fody;
 
 using XDRPCPlusPlus;
 using XDevkit;
 
-using Fody;
+using LordVirusMw2XboxLib;
 
 namespace LordVirusPersonalMw2RTMToolXbox;
 
 [ConfigureAwait(false)]
 public sealed partial class MainWindow
 {
-    internal sealed class G_ClientComboBoxItem : ComboBoxItem
-    {
-        public G_Client? Client;
-    }
-
     private IXboxManager? XboxManager = null;
     private IXboxConsole? DevKit = null;
 
@@ -30,16 +26,17 @@ public sealed partial class MainWindow
     private CancellationTokenSource? _levelCancellationTokenSource = null;
     private CancellationTokenSource? _prestigeCancellationTokenSource = null;
 
-    private G_Client?[] CurrentGameClients = new G_Client?[_maxClientCount]; 
+    private readonly Task?[] unlockAllTasks = new Task?[_maxClientCount];
+    private readonly G_Client?[] CurrentGameClients = new G_Client?[_maxClientCount];
 
-    private bool InGame
+    private G_Client? SelectedClient
     {
         get
         {
-            if (DevKit is null)
-                return false;
+            if (ClientComboBox.SelectedValue is not G_ClientComboBoxItem g_ClientComboBox)
+                return null;
 
-            return Mw2GameFunctions.Cg_DvarGetBool(DevKit!, "cl_ingame");
+            return g_ClientComboBox.Client;
         }
     }
 
@@ -93,7 +90,7 @@ public sealed partial class MainWindow
             ClientComboBox.IsEnabled = true;
 
             Internal_UpdateCurrentUserInfo();
-            Mw2GameFunctions.Cbuf_AddText(DevKit!, "loc_warningsUI 0; loc_warnings 0; cg_blood 0; cg_bloodLimit 1;");
+            Mw2GameFunctions.Cbuf_AddText(DevKit!, "loc_warningsUI 0; loc_warnings 0;");
 
             MessageBox.Show
             (
@@ -127,7 +124,7 @@ public sealed partial class MainWindow
 
     private void Internal_UpdateCurrentUserInfo()
     {
-        Span<byte> initNameByteSpan = DevKit?.ReadBytes(_nameAddress, _maxNameInputLength);
+        Span<byte> initNameByteSpan = DevKit?.ReadBytes(Mw2XboxLibConstants.NameAddress, _maxNameInputLength);
         initNameByteSpan = initNameByteSpan.TrimEnd((byte)0x00);
 
         Span<char> nameChars = stackalloc char[initNameByteSpan.Length];
@@ -164,7 +161,7 @@ public sealed partial class MainWindow
 
         NameChangerTextBox.Text = stringBuilder.ToString();
 
-        Span<byte> initClanByteSpan = DevKit?.ReadBytes(_clanAddress, 4);
+        Span<byte> initClanByteSpan = DevKit?.ReadBytes(Mw2XboxLibConstants.ClanAddress, 4);
         initClanByteSpan = initClanByteSpan.TrimEnd((byte)0x00);
         ClanNameChangerTextBox.Text = Encoding.ASCII.GetString(initClanByteSpan);
     }
@@ -189,156 +186,11 @@ public sealed partial class MainWindow
                 continue;
             }
 
-            var item = (G_ClientComboBoxItem)ClientComboBox.Items[clientIndex];
-            item.Content = item?.Client?.ClientName ?? string.Empty;
+            if (ClientComboBox.Items[clientIndex] is not G_ClientComboBoxItem g_ClientComboBoxItem)
+                continue;
+
+            g_ClientComboBoxItem.Content = g_ClientComboBoxItem.Client?.ClientName ?? string.Empty;
         }
-    }
-
-    private async Task Internal_UnlockAll(int client = -1)
-    {
-        if (DevKit is null)
-            return;
-
-        if (!InGame)
-        {
-            MessageBox.Show("You must be in game to unlock all!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            return;
-        }
-
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, "s loc_warningsUI 0; loc_warnings 0;");
-
-        Mw2GameFunctions.iPrintLnBold(DevKit!, "^2Starting Challenges!", client);
-
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks0);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks1);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks2);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks3);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks4);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks5);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks6);
-        Mw2GameFunctions.iPrintLn(DevKit!, "25 ^9Percent ^4Unlocked", client);
-        await Task.Delay(TimeSpan.FromSeconds(4));
-
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks7);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks8);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks9);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks10);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks11);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks12);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks13);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks14);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks15);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks16);
-        Mw2GameFunctions.iPrintLn(DevKit!, "50 ^9Percent ^4Unlocked", client);
-        await Task.Delay(TimeSpan.FromSeconds(4));
-
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks17);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks18);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks19);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks20);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks21);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks22);
-        Mw2GameFunctions.iPrintLn(DevKit!, "75 ^9Percent ^4Unlocked", client);
-        await Task.Delay(TimeSpan.FromSeconds(4));
-
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks23);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks24);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks25);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks26);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks27);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks28);
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, _unlocks29);
-        Mw2GameFunctions.iPrintLn(DevKit!, "100 ^9Percent ^4Unlocked", client);
-        await Task.Delay(TimeSpan.FromMilliseconds(200));
-
-        Mw2GameFunctions.iPrintLnBold(DevKit!, "^2Completed Challenges!", client);
-    }
-
-    private void Internal_SetPrestige(int prestige = 10)
-    {
-        if (prestige < _minLevel)
-            return;
-
-        if (prestige > _maxPrestige)
-            return;
-
-        byte[] prestigeBytes = BitConverter
-            .GetBytes(prestige)
-            .ToArray();
-
-        DevKit?.DebugTarget
-            .SetMemory
-            (
-                _prestigeAddress, 
-                (uint)prestigeBytes.Length, 
-                prestigeBytes, 
-                out _
-            );
-    }
-
-    private void Internal_SetLevel(int level = 70)
-    {
-        if (level < _minLevel)
-            return;
-
-        if (level > _maxLevel)
-            return;
-
-        byte[] levelBytes = BitConverter
-            .GetBytes(_levelTable[level - 1])
-            .ToArray();
-
-        DevKit?.DebugTarget
-            .SetMemory
-            (
-                _levelAddress, 
-                (uint)levelBytes.Length,
-                levelBytes,
-                out _
-            );
-    }
-
-    private void Internal_SetName(ReadOnlySpan<char> newName)
-    {
-        if (newName.Length > _maxNameInputLength)
-            newName = newName[.._maxNameInputLength];
-
-        Span<byte> nameBytes = stackalloc byte[_maxNameInputLength];
-        Encoding.ASCII.GetBytes(newName, nameBytes);
-
-        //if (InGame)
-        //{
-        //    Internal_CbufAddText($"userinfo \"\\clanabbrev\\^{_random.Next(6)}\\name\\{newName}\"");
-
-        //    return;
-        //}
-
-        DevKit?.DebugTarget
-            .SetMemory
-            (
-                _nameAddress,
-                (uint)nameBytes.Length,
-                nameBytes.ToArray(),
-                out _
-            );
-    }
-
-    private void Internal_SetClanName(ReadOnlySpan<char> newClanName)
-    {
-        if (newClanName.Length > 4)
-            newClanName = newClanName[..4];
-
-        Span<byte> clanNameBytes = stackalloc byte[4];
-        Encoding.ASCII.GetBytes(newClanName, clanNameBytes);
-
-        DevKit?.DebugTarget
-            .SetMemory
-            (
-                _clanAddress, 
-                (uint)clanNameBytes.Length,
-                clanNameBytes.ToArray(),
-                out _
-            );
     }
 
     private void Internal_SetRealTimeNameChanging(bool toggleValue)
@@ -442,7 +294,7 @@ public sealed partial class MainWindow
         newNameBuffer = newNameBuffer[..tempMaxNameInputLength];
 
         ParseSpan:
-        if (RainbowCheckBox.IsChecked ?? false) 
+        if (RainbowCheckBox.IsChecked ?? false)
             Internal_ParseFlashingCodes(newNameBuffer, out newNameBuffer);
 
         if (ButtonCheckBox.IsChecked ?? false)
@@ -509,10 +361,13 @@ public sealed partial class MainWindow
     {
         do
         {
-            Internal_SetName(Internal_BuildAutoUpdatingNameString());
+            if (DevKit is null)
+                break;
+
+            Mw2GameFunctions.SetName(DevKit!, Internal_BuildAutoUpdatingNameString());
 
             await Task
-                .Delay(TimeSpan.FromMicroseconds(150), cancellationToken)
+                .Delay(TimeSpan.FromMilliseconds(150), cancellationToken)
                 .ConfigureAwait(true);
         }
         while (!cancellationToken.IsCancellationRequested);
@@ -524,9 +379,12 @@ public sealed partial class MainWindow
 
         do
         {
-            Internal_SetLevel(level++);
+            if (DevKit is null)
+                break;
 
-            level = level % (_maxLevel + 1);
+            Mw2GameFunctions.SetLevel(DevKit!, level++);
+
+            level %= (_maxLevel + 1);
 
             await Task.Delay(TimeSpan.FromMilliseconds(70), cancellationToken);
         }
@@ -539,9 +397,12 @@ public sealed partial class MainWindow
 
         do
         {
-            Internal_SetPrestige(prestige++);
+            if (DevKit is null)
+                break;
 
-            prestige = prestige % (_maxPrestige + 1);
+            Mw2GameFunctions.SetPrestige(DevKit!, prestige++);
+
+            prestige %= (_maxPrestige + 1);
 
             await Task.Delay(TimeSpan.FromMilliseconds(600), cancellationToken);
         }

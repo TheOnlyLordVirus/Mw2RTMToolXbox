@@ -26,8 +26,8 @@ public sealed partial class MainWindow
     private CancellationTokenSource? levelCancellationTokenSource = null;
     private CancellationTokenSource? prestigeCancellationTokenSource = null;
 
-    private readonly Task?[] unlockAllTasks = new Task?[_maxClientCount];
-    private readonly G_Client?[] currentGameClients = new G_Client?[_maxClientCount];
+    private readonly Task?[] _unlockAllTasks = new Task?[_maxClientCount];
+    private readonly G_Client?[] _currentGameClients = new G_Client?[_maxClientCount];
 
     private G_Client? SelectedClient
     {
@@ -173,14 +173,14 @@ public sealed partial class MainWindow
 
         for (int clientIndex = 0; clientIndex < _maxClientCount; ++clientIndex) 
         {
-            if (currentGameClients[clientIndex] is null)
+            if (_currentGameClients[clientIndex] is null)
             {
-                currentGameClients[clientIndex] = new G_Client(devKit!, clientIndex);
+                _currentGameClients[clientIndex] = new G_Client(devKit!, clientIndex);
 
                 ClientComboBox.Items.Add(new G_ClientComboBoxItem()
                 {
-                    Content = currentGameClients[clientIndex]?.ClientName,
-                    Client = currentGameClients[clientIndex]
+                    Content = _currentGameClients[clientIndex]?.ClientName,
+                    Client = _currentGameClients[clientIndex]
                 });
 
                 continue;

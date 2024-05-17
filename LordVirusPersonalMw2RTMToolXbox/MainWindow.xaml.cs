@@ -42,18 +42,18 @@ public sealed partial class MainWindow : Window
 
     private void ChangeClanNameButton_Click(object sender, RoutedEventArgs e)
     {
-        if (DevKit is null)
+        if (devKit is null)
             return;
 
-        Mw2GameFunctions.SetClanName(DevKit!, ClanNameChangerTextBox.Text);
+        Mw2GameFunctions.SetClanName(devKit!, ClanNameChangerTextBox.Text);
     }
 
     private void ChangeNameButton_Click(object sender, RoutedEventArgs e)
     {
-        if (DevKit is null)
+        if (devKit is null)
             return;
 
-        Mw2GameFunctions.SetName(DevKit!, NameChangerTextBox.Text);
+        Mw2GameFunctions.SetName(devKit!, NameChangerTextBox.Text);
     }
 
     private void RealTimeNameChangeCheckBox_Checked(object sender, RoutedEventArgs e)
@@ -92,17 +92,17 @@ public sealed partial class MainWindow : Window
 
     private void LaserCheckBox_Checked(object sender, RoutedEventArgs e)
     {
-        DevKit?.WriteByte(_laserAddress, _trueByte);
+        devKit?.WriteByte(_laserAddress, _trueByte);
     }
 
     private void LaserCheckBox_UnChecked(object sender, RoutedEventArgs e)
     {
-        DevKit?.WriteByte(_laserAddress, _falseByte);
+        devKit?.WriteByte(_laserAddress, _falseByte);
     }
 
     private void RedBoxCheckBox_Checked(object sender, RoutedEventArgs e)
     {
-        DevKit?.DebugTarget
+        devKit?.DebugTarget
             .SetMemory
             (
                 _redBoxAddress, 
@@ -114,7 +114,7 @@ public sealed partial class MainWindow : Window
 
     private void RedBoxCheckBox_UnChecked(object sender, RoutedEventArgs e)
     {
-        DevKit?.DebugTarget
+        devKit?.DebugTarget
             .SetMemory
             (
                 _redBoxAddress, 
@@ -126,7 +126,7 @@ public sealed partial class MainWindow : Window
 
     private void ThermalCheckBox_Checked(object sender, RoutedEventArgs e)
     {
-        DevKit?.DebugTarget
+        devKit?.DebugTarget
             .SetMemory
             (
                 _thermalAddress, 
@@ -138,7 +138,7 @@ public sealed partial class MainWindow : Window
 
     private void ThermalCheckBox_UnChecked(object sender, RoutedEventArgs e)
     {
-        DevKit?.DebugTarget
+        devKit?.DebugTarget
             .SetMemory
             (
                 _thermalAddress, 
@@ -150,7 +150,7 @@ public sealed partial class MainWindow : Window
 
     private void NoRecoilCheckBox_Checked(object sender, RoutedEventArgs e)
     {
-        DevKit?.DebugTarget
+        devKit?.DebugTarget
             .SetMemory
             (
                 _noRecoilAddress,
@@ -162,7 +162,7 @@ public sealed partial class MainWindow : Window
 
     private void NoRecoilCheckBox_UnChecked(object sender, RoutedEventArgs e)
     {
-        DevKit?.DebugTarget
+        devKit?.DebugTarget
             .SetMemory
             (
                 _noRecoilAddress,
@@ -174,82 +174,82 @@ public sealed partial class MainWindow : Window
 
     private void ProModCheckBox_Checked(object sender, RoutedEventArgs e)
     {
-        if (DevKit is null)
+        if (devKit is null)
             return;
 
-        Mw2GameFunctions.Cbuf_AddText(DevKit, ("cg_fov 100;"));
+        Mw2GameFunctions.Cbuf_AddText(devKit, ("cg_fov 100;"));
     }
 
     private void ProModCheckBox_UnChecked(object sender, RoutedEventArgs e)
     {
-        if (DevKit is null)
+        if (devKit is null)
             return;
 
-        Mw2GameFunctions.Cbuf_AddText(DevKit, ("reset cg_fov;"));
+        Mw2GameFunctions.Cbuf_AddText(devKit, ("reset cg_fov;"));
     }
 
     private void CartoonCheckBox_Checked(object sender, RoutedEventArgs e)
     {
-        if (DevKit is null)
+        if (devKit is null)
             return;
 
-        Mw2GameFunctions.Cbuf_AddText(DevKit, ("r_fullbright 1;"));
+        Mw2GameFunctions.Cbuf_AddText(devKit, ("r_fullbright 1;"));
     }
 
     private void CartoonCheckBox_UnChecked(object sender, RoutedEventArgs e)
     {
-        if (DevKit is null)
+        if (devKit is null)
             return;
 
-        Mw2GameFunctions.Cbuf_AddText(DevKit, ("r_fullbright 0;"));
+        Mw2GameFunctions.Cbuf_AddText(devKit, ("r_fullbright 0;"));
     }
 
     private void ChromeCheckBox_Checked(object sender, RoutedEventArgs e)
     {
-        if (DevKit is null)
+        if (devKit is null)
             return;
 
-        Mw2GameFunctions.Cbuf_AddText(DevKit, ("r_specularmap 2;"));
+        Mw2GameFunctions.Cbuf_AddText(devKit, ("r_specularmap 2;"));
     }
 
     private void ChromeCheckBox_UnChecked(object sender, RoutedEventArgs e)
     {
-        if (DevKit is null)
+        if (devKit is null)
             return;
 
-        Mw2GameFunctions.Cbuf_AddText(DevKit, ("r_specularmap 0;"));
+        Mw2GameFunctions.Cbuf_AddText(devKit, ("r_specularmap 0;"));
     }
 
     private void UiDebugCheckBox_Checked(object sender, RoutedEventArgs e)
     {
-        if (DevKit is null)
+        if (devKit is null)
             return;
 
-        Mw2GameFunctions.Cbuf_AddText(DevKit, ("ui_debugmode 1;"));
+        Mw2GameFunctions.Cbuf_AddText(devKit, ("ui_debugmode 1;"));
     }
 
     private void UiDebugCheckBox_UnChecked(object sender, RoutedEventArgs e)
     {
-        if (DevKit is null)
+        if (devKit is null)
             return;
 
-        Mw2GameFunctions.Cbuf_AddText(DevKit, ("ui_debugmode 0;"));
+        Mw2GameFunctions.Cbuf_AddText(devKit, ("ui_debugmode 0;"));
     }
 
     private void FxCheckBox_Checked(object sender, RoutedEventArgs e)
     {
-        if (DevKit is null)
+        if (devKit is null)
             return;
 
-        Mw2GameFunctions.Cbuf_AddText(DevKit, "fx_enable 1;");
+        Mw2GameFunctions.Cbuf_AddText(devKit, "fx_enable 1;");
     }
 
     private void FxCheckBox_UnChecked(object sender, RoutedEventArgs e)
     {
-        if (DevKit is null)
+        if (devKit is null)
             return;
 
-        Mw2GameFunctions.Cbuf_AddText(DevKit, "fx_enable 0;");
+        Mw2GameFunctions.Cbuf_AddText(devKit, "fx_enable 0;");
     }
 
     private void ChangePrestigeButton_Click(object sender, RoutedEventArgs e)
@@ -257,10 +257,10 @@ public sealed partial class MainWindow : Window
         if (PrestigeIntegerUpDown.Value is null)
             return;
 
-        if (DevKit is null)
+        if (devKit is null)
             return;
 
-        Mw2GameFunctions.SetPrestige(DevKit!, (int)PrestigeIntegerUpDown.Value);
+        Mw2GameFunctions.SetPrestige(devKit!, (int)PrestigeIntegerUpDown.Value);
     }
 
     private void LoopPrestigeCheckBox_Checked(object sender, RoutedEventArgs e)
@@ -278,10 +278,10 @@ public sealed partial class MainWindow : Window
         if (LevelIntegerUpDown.Value is null)
             return;
 
-        if (DevKit is null)
+        if (devKit is null)
             return;
 
-        Mw2GameFunctions.SetLevel(DevKit, (int)LevelIntegerUpDown.Value);
+        Mw2GameFunctions.SetLevel(devKit, (int)LevelIntegerUpDown.Value);
     }
 
     private void LoopLevelCheckBox_Checked(object sender, RoutedEventArgs e)
@@ -296,28 +296,28 @@ public sealed partial class MainWindow : Window
 
     private void CBuffAddTextButton_Click(object sender, RoutedEventArgs e)
     {
-        if (DevKit is null)
+        if (devKit is null)
             return;
 
-        Mw2GameFunctions.Cbuf_AddText(DevKit!, CBuffAddTextBox.Text);
+        Mw2GameFunctions.Cbuf_AddText(devKit!, CBuffAddTextBox.Text);
     }
 
     private void SendGameServerCommandButton_Click(object sender, RoutedEventArgs e)
     {
-        if (DevKit is null)
+        if (devKit is null)
             return;
 
         int client = -1; // TODO: Get current client from the drop box.
 
-        Mw2GameFunctions.Sv_GameSendServerCommand(DevKit!, client, 0, SendGameServerCommandTextBox);
+        Mw2GameFunctions.Sv_GameSendServerCommand(devKit!, client, 0, SendGameServerCommandTextBox);
     }
 
     private void EndGameButton_Click(object sender, RoutedEventArgs e)
     {
-        if (DevKit is null)
+        if (devKit is null)
             return;
 
-        Mw2GameFunctions.EndGame(DevKit!);
+        Mw2GameFunctions.EndGame(devKit!);
     }
 
     private void UnlockAllButton_Click(object sender, RoutedEventArgs e)
@@ -325,11 +325,11 @@ public sealed partial class MainWindow : Window
         if (SelectedClient is null)
             return;
 
-        if (unlockAllTasks[SelectedClient.ClientIndex] is not null &&
-            !(unlockAllTasks[SelectedClient.ClientIndex]!.IsCompleted))
+        if (_unlockAllTasks[SelectedClient.ClientIndex] is not null &&
+            !(_unlockAllTasks[SelectedClient.ClientIndex]!.IsCompleted))
             return;
 
-        unlockAllTasks[SelectedClient.ClientIndex] = SelectedClient.UnlockAll();
+        _unlockAllTasks[SelectedClient.ClientIndex] = SelectedClient.UnlockAll();
     }
 
     private void ClientComboBox_DropDownOpened(object sender, System.EventArgs e)

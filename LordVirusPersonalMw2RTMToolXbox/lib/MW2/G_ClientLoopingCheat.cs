@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-
 using XDevkit;
 using XDRPCPlusPlus;
 
@@ -14,25 +13,33 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
 {    
     private readonly IXboxConsole _xboxConsole;
     private readonly G_ClientStructOffset _cheatOffset;
+    private readonly G_ClientStructOffset _correctedCheatAddress;
+    private G_ClientStructOffset CorrectedCheatAddress
+    {
+        get => _correctedCheatAddress;
+
+        init
+        {
+            _correctedCheatAddress =
+                G_ClientStructOffset.Array_BaseAddress +
+                    (G_ClientStructOffset.StructSize * (uint)_clientNumber) +
+                        _cheatOffset;
+        }
+    }
 
     private readonly string? _cheatName;
     private readonly int _clientNumber = 0;
     private readonly uint _byteCount = 1;
      
     private readonly bool _usingBytes = true;
+
     private readonly byte[]? _onBytes;
     private readonly byte[]? _offBytes;
 
     private readonly IEnumerable<IGameCheat>? _gameCheats;
 
-    private CancellationTokenSource? updaterCancellationTokenSource = new CancellationTokenSource();
-
-    private uint CorrectedCheatAddress =>
-        G_ClientStructOffset.Array_BaseAddress +
-            (G_ClientStructOffset.StructSize * (uint)_clientNumber) +
-                _cheatOffset;
-
-    private bool enabled = false;
+    private bool isEnabled = false;
+    private CancellationTokenSource? updaterCancellationTokenSource = new ();
 
     public G_ClientLoopingCheat(
         IXboxConsole xboxConsole,
@@ -151,7 +158,7 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
                 foreach (var cheat in _gameCheats)
                     cheat.Disable();
 
-            enabled = false;
+            isEnabled = false;
 
             if (_cheatName is not null)
                 Mw2GameFunctions.iPrintLn(_xboxConsole, $"{_cheatName}^7: ^1Disabled", _clientNumber);
@@ -169,31 +176,28 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
                 .ConfigureAwait(false);
         }
 
-        catch
-        {
-            return;
-        }
+        catch { return; }
 
-        enabled = true;
+        isEnabled = true;
     }
 
     public void Disable()
     {
         updaterCancellationTokenSource?.Cancel();
         updaterCancellationTokenSource = null;
-        enabled = false;
+        isEnabled = false;
     }
 
     public bool GetValue()
     {
-        return enabled;
+        return isEnabled;
     }
 
     public void Toggle()
     {
-        enabled = !enabled;
+        isEnabled = !isEnabled;
 
-        if (enabled)
+        if (isEnabled)
             Enable();
         else
             Disable();

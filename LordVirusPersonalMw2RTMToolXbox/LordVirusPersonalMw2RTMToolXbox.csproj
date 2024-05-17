@@ -31,6 +31,7 @@
 		<Compile Include="lib\MW2\IGameCheat.cs" />
 		<Compile Include="lib\MW2\Mw2GameFunctions.cs" />
 		<Compile Include="lib\MW2\Mw2XboxLibConstants.cs" />
+		<Compile Include="lib\MW2\PlayerWeaponStructTesting.cs" />
 		<Compile Include="lib\XDRPC\MarshalingUtils.cs" />
 		<Compile Include="lib\XDRPC\XDRPCArgumentInfo.cs" />
 		<Compile Include="lib\XDRPC\XDRPCException.cs" />
@@ -81,7 +82,7 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.1" />
+		<PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.0" />
 	</ItemGroup>
 
 	<ItemGroup>

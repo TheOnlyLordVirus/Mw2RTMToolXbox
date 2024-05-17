@@ -309,7 +309,7 @@ public sealed partial class MainWindow : Window
 
         int client = -1; // TODO: Get current client from the drop box.
 
-        Mw2GameFunctions.Cg_GameSendServerCommand(DevKit!, client, 0, SendGameServerCommandTextBox);
+        Mw2GameFunctions.Sv_GameSendServerCommand(DevKit!, client, 0, SendGameServerCommandTextBox);
     }
 
     private void EndGameButton_Click(object sender, RoutedEventArgs e)

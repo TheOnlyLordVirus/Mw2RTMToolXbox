@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using XDevkit;
-using LordVirusMw2XboxLib;
 
-namespace FuriousXbox.XboxLib.MW2;
+using XDevkit;
+
+namespace LordVirusMw2XboxLib;
 
 /// <summary>
 /// This is a debug class which will be refactored to a representation of its in game struct.

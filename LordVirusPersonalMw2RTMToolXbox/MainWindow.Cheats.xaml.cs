@@ -17,8 +17,8 @@ namespace LordVirusPersonalMw2RTMToolXbox;
 [ConfigureAwait(false)]
 public sealed partial class MainWindow
 {
-    private IXboxManager? XboxManager = null;
-    private IXboxConsole? DevKit = null;
+    private IXboxManager? xboxManager = null;
+    private IXboxConsole? devKit = null;
 
     private readonly Random _random = new Random();
 
@@ -44,8 +44,8 @@ public sealed partial class MainWindow
     {
         try
         {
-            XboxManager = new XboxManager();
-            DevKit = XboxManager.OpenConsole(XboxManager.DefaultConsole);
+            xboxManager = new XboxManager();
+            devKit = xboxManager.OpenConsole(xboxManager.DefaultConsole);
 
             LaserCheckBox.IsEnabled = true;
             RedBoxCheckBox.IsEnabled = true;
@@ -90,7 +90,7 @@ public sealed partial class MainWindow
             ClientComboBox.IsEnabled = true;
 
             Internal_UpdateCurrentUserInfo();
-            Mw2GameFunctions.Cbuf_AddText(DevKit!, "loc_warningsUI 0; loc_warnings 0;");
+            Mw2GameFunctions.Cbuf_AddText(devKit!, "loc_warningsUI 0; loc_warnings 0;");
 
             MessageBox.Show
             (
@@ -124,7 +124,7 @@ public sealed partial class MainWindow
 
     private void Internal_UpdateCurrentUserInfo()
     {
-        Span<byte> initNameByteSpan = DevKit?.ReadBytes(Mw2XboxLibConstants.NameAddress, _maxNameInputLength);
+        Span<byte> initNameByteSpan = devKit?.ReadBytes(Mw2XboxLibConstants.NameAddress, _maxNameInputLength);
         initNameByteSpan = initNameByteSpan.TrimEnd((byte)0x00);
 
         Span<char> nameChars = stackalloc char[initNameByteSpan.Length];
@@ -161,21 +161,21 @@ public sealed partial class MainWindow
 
         NameChangerTextBox.Text = stringBuilder.ToString();
 
-        Span<byte> initClanByteSpan = DevKit?.ReadBytes(Mw2XboxLibConstants.ClanAddress, 4);
+        Span<byte> initClanByteSpan = devKit?.ReadBytes(Mw2XboxLibConstants.ClanAddress, 4);
         initClanByteSpan = initClanByteSpan.TrimEnd((byte)0x00);
         ClanNameChangerTextBox.Text = Encoding.ASCII.GetString(initClanByteSpan);
     }
 
     private void Internal_RefreshClients()
     {
-        if (DevKit is null)
+        if (devKit is null)
             return;
 
         for (int clientIndex = 0; clientIndex < _maxClientCount; ++clientIndex) 
         {
             if (currentGameClients[clientIndex] is null)
             {
-                currentGameClients[clientIndex] = new G_Client(DevKit!, clientIndex);
+                currentGameClients[clientIndex] = new G_Client(devKit!, clientIndex);
 
                 ClientComboBox.Items.Add(new G_ClientComboBoxItem()
                 {
@@ -361,10 +361,10 @@ public sealed partial class MainWindow
     {
         do
         {
-            if (DevKit is null)
+            if (devKit is null)
                 break;
 
-            Mw2GameFunctions.SetName(DevKit!, Internal_BuildAutoUpdatingNameString());
+            Mw2GameFunctions.SetName(devKit!, Internal_BuildAutoUpdatingNameString());
 
             await Task
                 .Delay(TimeSpan.FromMilliseconds(150), cancellationToken)
@@ -379,10 +379,10 @@ public sealed partial class MainWindow
 
         do
         {
-            if (DevKit is null)
+            if (devKit is null)
                 break;
 
-            Mw2GameFunctions.SetLevel(DevKit!, level++);
+            Mw2GameFunctions.SetLevel(devKit!, level++);
 
             level %= (_maxLevel + 1);
 
@@ -397,10 +397,10 @@ public sealed partial class MainWindow
 
         do
         {
-            if (DevKit is null)
+            if (devKit is null)
                 break;
 
-            Mw2GameFunctions.SetPrestige(DevKit!, prestige++);
+            Mw2GameFunctions.SetPrestige(devKit!, prestige++);
 
             prestige %= (_maxPrestige + 1);
 

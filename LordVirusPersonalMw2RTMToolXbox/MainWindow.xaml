@@ -22,16 +22,16 @@
             </Border>
         </Grid>
 
-        <Grid x:Name="TitleControlBar" MouseDown="Window_MouseDown" Margin="0,0,0,243" Background="Transparent">
+        <Grid x:Name="TitleControlBar" MouseDown="Window_MouseDown" Margin="0,0,0,243" Background="#444444">
             <Label x:Name="Client_Label" Content="Lord Virus's Personal MW2 Xbox Tool" HorizontalAlignment="Left" Margin="7,0,0,0" VerticalAlignment="Center" Foreground="white" Height="30"/>
             <Button x:Name="MinimizeForm" Content="_" HorizontalAlignment="Right" Margin="0,0,30,0" VerticalAlignment="Top" Height="30" Width="30" Background="#00000000" BorderBrush="#00000000" Foreground="White" FontFamily="OCR A Extended" FontSize="10" Click="MinimizeForm_Click"/>
             <Button x:Name="CloseForm" Content="X" Margin="0,0,0,0" VerticalAlignment="Top" Height="30" Click="CloseForm_Click" Background="#00000000" BorderBrush="#00000000" Foreground="White" FontFamily="OCR A Extended" FontSize="10" HorizontalAlignment="Right" Width="30"/>
         </Grid>
 
-        <Grid Margin="1,30,1,1" Background="#444444">
-            <Grid.Resources>
+        <TabControl Margin="0,30,0,0" BorderBrush="#FF444444" Background="#FF444444" Foreground="#FF444444">
+            <TabControl.Resources>
                 <Style TargetType="{x:Type Label}">
-                    <Setter Property="Foreground" Value="white" />
+                    <Setter Property="Foreground" Value="#FF569DE5" />
                 </Style>
 
                 <Style TargetType="{x:Type TextBox}">
@@ -70,9 +70,9 @@
 
                                     <Trigger Property="IsEnabled" Value="false">
                                         <Setter Property="Foreground" Value="#FF666666"/>
-                                        
+
                                     </Trigger>
-                                    
+
                                     <Trigger Property="IsMouseOver" Value="true">
                                         <Setter Property="Background" Value="#FF3C3C3C" />
                                         <Setter Property="BorderBrush" Value="white" />
@@ -119,58 +119,112 @@
                         </Setter.Value>
                     </Setter>
                 </Style>
-            </Grid.Resources>
 
-            <Label Content="Connection:" HorizontalAlignment="Left" Margin="27,1,0,0" VerticalAlignment="Top" Width="75"/>
-            <Button x:Name="ConnectButton" Content="Connect" HorizontalAlignment="Left" Margin="31,27,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="ConnectButton_Click"/>
 
-            <CheckBox x:Name="LaserCheckBox" Content="Laser" IsEnabled="false" HorizontalAlignment="Left" Margin="207,18,0,0" VerticalAlignment="Top" Width="56" Checked="LaserCheckBox_Checked" Unchecked="LaserCheckBox_UnChecked"/>
-            <CheckBox x:Name="RedBoxCheckBox" Content="Red Boxs" IsEnabled="false" Margin="281,18,0,0" VerticalAlignment="Top" Checked="RedBoxCheckBox_Checked" Unchecked="RedBoxCheckBox_UnChecked" HorizontalAlignment="Left" Width="72"/>
-            <CheckBox x:Name="ThermalCheckBox" Content="Thermal" IsEnabled="false" Margin="353,19,0,0" VerticalAlignment="Top" Checked="ThermalCheckBox_Checked" Unchecked="ThermalCheckBox_UnChecked" HorizontalAlignment="Left" Width="72"/>
+                <Style TargetType="{x:Type TabItem}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type TabItem}">
+                                <Border Name="Border" BorderThickness="1,0,1,1" BorderBrush="#FF666666" CornerRadius=".08">
+                                    <ContentPresenter x:Name="ContentSite"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Center"
+                                                ContentSource="Header"
+                                                Margin="10,2"/>
+                                </Border>
 
-            <CheckBox x:Name="NoRecoilCheckBox" Content="No Recoil" IsEnabled="false" HorizontalAlignment="Left" Margin="207,39,0,0" VerticalAlignment="Top" Width="72" Checked="NoRecoilCheckBox_Checked" Unchecked="NoRecoilCheckBox_UnChecked"/>
-            <CheckBox x:Name="ProModCheckBox" Content="ProMod" IsEnabled="false" HorizontalAlignment="Left" Margin="281,39,0,0" VerticalAlignment="Top" Width="72" Checked="ProModCheckBox_Checked" Unchecked="ProModCheckBox_UnChecked"/>
-            <CheckBox x:Name="CartoonCheckBox" Content="Cartoon" IsEnabled="false" HorizontalAlignment="Left" Margin="353,39,0,0" VerticalAlignment="Top" Width="66" Checked="CartoonCheckBox_Checked" Unchecked="CartoonCheckBox_UnChecked"/>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="#FF262626" />
+                                        <Setter TargetName="Border" Property="TabItem.BorderThickness" Value="0,0,0,6"/>
+                                        <Setter TargetName="Border" Property="TabItem.Margin" Value="0,0,0,0"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter TargetName="Border" Property="TabItem.Background" Value="#FF323232" />
+                                        <Setter TargetName="Border" Property="TabItem.BorderThickness" Value="0,0,0,0" />
+                                        <Setter TargetName="Border" Property="TabItem.Margin" Value="0,0,0,2"/>
+                                    </Trigger>
 
-            <CheckBox x:Name="ChromeCheckBox" Content="Chrome" IsEnabled="false" Margin="425,19,0,0" VerticalAlignment="Top" Checked="ChromeCheckBox_Checked" Unchecked="ChromeCheckBox_UnChecked" HorizontalAlignment="Left" Width="66"/>
-            <CheckBox x:Name="UiDebugCheckBox" Content="Ui Debug" IsEnabled="false" HorizontalAlignment="Left" Margin="425,39,0,0" VerticalAlignment="Top" Width="74" Checked="UiDebugCheckBox_Checked" Unchecked="UiDebugCheckBox_UnChecked"/>
-            <CheckBox x:Name="FxCheckBox" Content="Game Fx" IsEnabled="false" IsChecked="True" HorizontalAlignment="Left" Margin="492,19,0,0" VerticalAlignment="Top" Width="64" Checked="FxCheckBox_Checked" Unchecked="FxCheckBox_UnChecked"/>
+                                    <Trigger Property="IsEnabled" Value="True">
+                                        <Setter TargetName="Border" Property="TextBlock.Foreground" Value="White" />
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter TargetName="Border" Property="TextBlock.Foreground" Value="White"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Resources>
 
-            <Label Content="Name Changer:" HorizontalAlignment="Left" Margin="27,58,0,0" VerticalAlignment="Top" Width="113"/>
-            <Button x:Name="ChangeNameButton" IsEnabled="false" Content="Change" HorizontalAlignment="Left" Margin="271,83,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="ChangeNameButton_Click"/>
-            <TextBox x:Name="NameChangerTextBox" IsEnabled="false" MaxLength="34" HorizontalAlignment="Left" Margin="30,83,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="236" Height="20"/>
-            <CheckBox x:Name="RealTimeNameChangeCheckBox" Content="Real Time Update" IsEnabled="false" HorizontalAlignment="Left" Margin="31,109,0,0" VerticalAlignment="Top" Width="122" Checked="RealTimeNameChangeCheckBox_Checked" Unchecked="RealTimeNameChangeCheckBox_Unchecked"/>
-            <CheckBox x:Name="RainbowCheckBox" Content="Rainbow?" IsEnabled="false" HorizontalAlignment="Left" Margin="153,109,0,0" VerticalAlignment="Top" Width="75" Checked="RainbowCheckBox_Checked" Unchecked="RainbowCheckBox_Unchecked"/>
-            <CheckBox x:Name="ButtonCheckBox" Content="Buttons?" IsEnabled="false" HorizontalAlignment="Left" Margin="231,109,0,0" VerticalAlignment="Top" Width="71" Checked="RainbowCheckBox_Checked" Unchecked="RainbowCheckBox_Unchecked"/>
+            <TabItem Header="Non-Host">
+                <Grid Background="#444444" Height="214" Margin="0,0,0,0">
+                    <Label Content="Connection:" Margin="27,1,662,187"/>
+                    <Button x:Name="ConnectButton" Content="Connect To Xbox" HorizontalAlignment="Left" Margin="31,27,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="ConnectButton_Click"/>
 
-            <Label Content="Clan Tag Changer:" HorizontalAlignment="Left" Margin="28,132,0,0" VerticalAlignment="Top" Width="113"/>
-            <Button x:Name="ChangeClanNameButton" IsEnabled="false" Content="Change" HorizontalAlignment="Left" Margin="271,158,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="ChangeClanNameButton_Click"/>
-            <TextBox x:Name="ClanNameChangerTextBox" IsEnabled="false" MaxLength="4" HorizontalAlignment="Left" Margin="31,158,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="235" Height="20"/>
+                    <CheckBox x:Name="LaserCheckBox" Content="Laser" IsEnabled="false" HorizontalAlignment="Left" Margin="403,144,0,0" VerticalAlignment="Top" Width="56" Checked="LaserCheckBox_Checked" Unchecked="LaserCheckBox_UnChecked"/>
+                    <CheckBox x:Name="RedBoxCheckBox" Content="Red Boxs" IsEnabled="false" Margin="477,144,0,0" VerticalAlignment="Top" Checked="RedBoxCheckBox_Checked" Unchecked="RedBoxCheckBox_UnChecked" HorizontalAlignment="Left" Width="72"/>
+                    <CheckBox x:Name="ThermalCheckBox" Content="Thermal" IsEnabled="false" Margin="549,145,0,0" VerticalAlignment="Top" Checked="ThermalCheckBox_Checked" Unchecked="ThermalCheckBox_UnChecked" HorizontalAlignment="Left" Width="72"/>
 
-            <Label Content="Set Prestige:" HorizontalAlignment="Left" Margin="40,180,0,0" VerticalAlignment="Top"/>
-            <CheckBox x:Name="LoopPrestigeCheckBox" Content="Loop?" HorizontalAlignment="Left" Margin="117,185,0,0" VerticalAlignment="Top" Width="55" Checked="LoopPrestigeCheckBox_Checked" Unchecked="LoopPrestigeCheckBox_Unchecked" IsEnabled="False"/>
-            <xctk:IntegerUpDown x:Name="PrestigeIntegerUpDown" Margin="40,205,0,17" IsEnabled="False" HorizontalAlignment="Left" Width="62"/>
-            <Button x:Name="ChangePrestigeButton" IsEnabled="false" Content="Change" HorizontalAlignment="Left" Margin="107,205,0,17" Width="75" Click="ChangePrestigeButton_Click"/>
+                    <CheckBox x:Name="NoRecoilCheckBox" Content="No Recoil" IsEnabled="false" HorizontalAlignment="Left" Margin="403,165,0,0" VerticalAlignment="Top" Width="72" Checked="NoRecoilCheckBox_Checked" Unchecked="NoRecoilCheckBox_UnChecked"/>
+                    <CheckBox x:Name="ProModCheckBox" Content="ProMod" IsEnabled="false" HorizontalAlignment="Left" Margin="477,165,0,0" VerticalAlignment="Top" Width="72" Checked="ProModCheckBox_Checked" Unchecked="ProModCheckBox_UnChecked"/>
+                    <CheckBox x:Name="CartoonCheckBox" Content="Cartoon" IsEnabled="false" HorizontalAlignment="Left" Margin="549,165,0,0" VerticalAlignment="Top" Width="66" Checked="CartoonCheckBox_Checked" Unchecked="CartoonCheckBox_UnChecked"/>
 
-            <Label VerticalAlignment="Top" Margin="231,180,0,0" HorizontalAlignment="Left" Content="Set Level:"/>
-            <CheckBox x:Name="LoopLevelCheckBox" Content="Loop?" HorizontalAlignment="Left" Margin="310,185,0,0" VerticalAlignment="Top" Width="52" Checked="LoopLevelCheckBox_Checked" Unchecked="LoopLevelCheckBox_Unchecked" IsEnabled="False"/>
-            <xctk:IntegerUpDown x:Name="LevelIntegerUpDown" Margin="231,205,0,17" IsEnabled="False" HorizontalAlignment="Left" Width="62"/>
-            <Button x:Name="ChangeLevelButton" IsEnabled="false" Content="Change" HorizontalAlignment="Left" Margin="298,205,0,0" VerticalAlignment="Top" Height="20" Width="75" Click="ChangeLevelButton_Click"/>
+                    <CheckBox x:Name="ChromeCheckBox" Content="Chrome" IsEnabled="false" Margin="621,145,0,0" VerticalAlignment="Top" Checked="ChromeCheckBox_Checked" Unchecked="ChromeCheckBox_UnChecked" HorizontalAlignment="Left" Width="66"/>
+                    <CheckBox x:Name="UiDebugCheckBox" Content="Ui Debug" IsEnabled="false" HorizontalAlignment="Left" Margin="621,165,0,0" VerticalAlignment="Top" Width="74" Checked="UiDebugCheckBox_Checked" Unchecked="UiDebugCheckBox_UnChecked"/>
+                    <CheckBox x:Name="FxCheckBox" Content="Game Fx" IsEnabled="false" IsChecked="True" HorizontalAlignment="Left" Margin="688,145,0,0" VerticalAlignment="Top" Width="64" Checked="FxCheckBox_Checked" Unchecked="FxCheckBox_UnChecked"/>
 
-            <Button x:Name="UnlockAllButton" Content="Unlock All" IsEnabled="False" HorizontalAlignment="Left" Margin="640,204,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="UnlockAllButton_Click"/>
-            <Button x:Name="EndGameButton" Content="End Game" IsEnabled="False" HorizontalAlignment="Left" Margin="640,21,0,0" VerticalAlignment="Top" Click="EndGameButton_Click" Height="18" Width="113"/>
+                    <Label Content="Name Changer:" Margin="27,58,624,130"/>
+                    <Button x:Name="ChangeNameButton" IsEnabled="false" Content="Change" HorizontalAlignment="Left" Margin="271,83,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="ChangeNameButton_Click"/>
+                    <TextBox x:Name="NameChangerTextBox" IsEnabled="false" MaxLength="34" HorizontalAlignment="Left" Margin="30,83,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="236" Height="20"/>
+                    <CheckBox x:Name="RealTimeNameChangeCheckBox" Content="Real Time Update" IsEnabled="false" HorizontalAlignment="Left" Margin="31,109,0,0" VerticalAlignment="Top" Width="122" Checked="RealTimeNameChangeCheckBox_Checked" Unchecked="RealTimeNameChangeCheckBox_Unchecked"/>
+                    <CheckBox x:Name="RainbowCheckBox" Content="Rainbow?" IsEnabled="false" HorizontalAlignment="Left" Margin="153,109,0,0" VerticalAlignment="Top" Width="75" Checked="RainbowCheckBox_Checked" Unchecked="RainbowCheckBox_Unchecked"/>
+                    <CheckBox x:Name="ButtonCheckBox" Content="Buttons?" IsEnabled="false" HorizontalAlignment="Left" Margin="231,109,0,0" VerticalAlignment="Top" Width="71" Checked="RainbowCheckBox_Checked" Unchecked="RainbowCheckBox_Unchecked"/>
 
-            <Label Content="CBuffAddText:" HorizontalAlignment="Left" Margin="411,58,0,0" VerticalAlignment="Top" Width="113"/>
-            <Button x:Name="CBuffAddTextButton" IsEnabled="false" Content="Send" HorizontalAlignment="Left" Margin="640,83,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="CBuffAddTextButton_Click"/>
-            <TextBox x:Name="CBuffAddTextBox" IsEnabled="false" MaxLength="32" HorizontalAlignment="Left" Margin="414,83,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="221" Height="20"/>
+                    <Label Content="Clan Tag Changer:" Margin="396,57,255,131"/>
+                    <Button x:Name="ChangeClanNameButton" IsEnabled="false" Content="Change" HorizontalAlignment="Left" Margin="639,83,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="ChangeClanNameButton_Click"/>
+                    <TextBox x:Name="ClanNameChangerTextBox" IsEnabled="false" MaxLength="4" HorizontalAlignment="Left" Margin="399,83,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="235" Height="20"/>
 
-            <Label Content="SendGameServerCommand" HorizontalAlignment="Left" Margin="411,128,0,0" VerticalAlignment="Top" Width="176"/>
-            <Button x:Name="SendGameServerCommandButton" IsEnabled="false" Content="Send" HorizontalAlignment="Left" Margin="640,153,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="SendGameServerCommandButton_Click"/>
-            <TextBox x:Name="SendGameServerCommandTextBox" IsEnabled="false" MaxLength="32" HorizontalAlignment="Left" Margin="414,153,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="221" Height="20"/>
+                    <Label Content="Set Prestige:" Margin="41,138,648,50"/>
+                    <CheckBox x:Name="LoopPrestigeCheckBox" Content="Loop?" HorizontalAlignment="Left" Margin="118,146,0,0" VerticalAlignment="Top" Width="55" Checked="LoopPrestigeCheckBox_Checked" Unchecked="LoopPrestigeCheckBox_Unchecked" IsEnabled="False"/>
+                    <xctk:IntegerUpDown x:Name="PrestigeIntegerUpDown" Margin="41,164,0,30" IsEnabled="False" HorizontalAlignment="Left" Width="62"/>
+                    <Button x:Name="ChangePrestigeButton" IsEnabled="false" Content="Change" HorizontalAlignment="Left" Margin="108,164,0,30" Width="75" Click="ChangePrestigeButton_Click"/>
 
-            <ComboBox x:Name="ClientComboBox" IsEnabled="false" HorizontalAlignment="Left" Margin="414,204,0,0" VerticalAlignment="Top" Width="221" Height="20" DropDownOpened="ClientComboBox_DropDownOpened">
+                    <Label Margin="232,138,473,50" Content="Set Level:"/>
+                    <CheckBox x:Name="LoopLevelCheckBox" Content="Loop?" HorizontalAlignment="Left" Margin="311,145,0,0" VerticalAlignment="Top" Width="52" Checked="LoopLevelCheckBox_Checked" Unchecked="LoopLevelCheckBox_Unchecked" IsEnabled="False"/>
+                    <xctk:IntegerUpDown x:Name="LevelIntegerUpDown" Margin="232,164,0,30" IsEnabled="False" HorizontalAlignment="Left" Width="62" RenderTransformOrigin="0.447,0.526"/>
+                    <Button x:Name="ChangeLevelButton" IsEnabled="false" Content="Change" HorizontalAlignment="Left" Margin="299,164,0,0" VerticalAlignment="Top" Height="20" Width="75" Click="ChangeLevelButton_Click"/>
+                    <Button x:Name="EndGameButton" Content="End Game" IsEnabled="False" HorizontalAlignment="Left" Margin="654,16,0,0" VerticalAlignment="Top" Click="EndGameButton_Click" Height="26" Width="84"/>
+                </Grid>
+            </TabItem>
 
-            </ComboBox>
-        </Grid>
+            <TabItem Header="Host">
+                <Grid Background="#444444" Margin="0,0,0,0">
+                    <Label Content="CBuffAddText:" HorizontalAlignment="Left" Margin="374,46,0,0" VerticalAlignment="Top" Width="113"/>
+                    <Button x:Name="CBuffAddTextButton" IsEnabled="false" Content="Send" HorizontalAlignment="Left" Margin="603,71,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="CBuffAddTextButton_Click"/>
+                    <TextBox x:Name="CBuffAddTextBox" IsEnabled="false" MaxLength="32" HorizontalAlignment="Left" Margin="377,71,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="221" Height="20"/>
+
+                    <Label Content="SendGameServerCommand" HorizontalAlignment="Left" Margin="374,116,0,0" VerticalAlignment="Top" Width="176"/>
+                    <Button x:Name="SendGameServerCommandButton" IsEnabled="false" Content="Send" HorizontalAlignment="Left" Margin="603,141,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="SendGameServerCommandButton_Click"/>
+                    <TextBox x:Name="SendGameServerCommandTextBox" IsEnabled="false" MaxLength="32" HorizontalAlignment="Left" Margin="377,141,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="221" Height="20"/>
+
+                    <ComboBox x:Name="ClientComboBox" IsEnabled="false" HorizontalAlignment="Left" Margin="49,15,0,0" VerticalAlignment="Top" Width="221" Height="20" DropDownOpened="ClientComboBox_DropDownOpened">
+
+                    </ComboBox>
+
+                    <Button x:Name="UnlockAllButton" Content="Unlock All" IsEnabled="False" HorizontalAlignment="Left" Margin="172,73,0,0" VerticalAlignment="Top" Height="20" Width="98" Click="UnlockAllButton_Click"/>
+                    <Button x:Name="GodModeButton" Content="God Mode" IsEnabled="False" HorizontalAlignment="Left" Margin="49,73,0,0" VerticalAlignment="Top" Height="20" Width="98" Click="GodModeButton_Click"/>
+                    <Button x:Name="InfAmmoButton" Content="Infinite Ammo" IsEnabled="False" HorizontalAlignment="Left" Margin="172,123,0,0" VerticalAlignment="Top" Height="20" Width="98" Click="InfAmmoButton_Click"/>
+                    <Button x:Name="NoClipButton" Content="No Clip" IsEnabled="False" HorizontalAlignment="Left" Margin="49,99,0,0" VerticalAlignment="Top" Height="20" Width="98" Click="NoClipButton_Click"/>
+                    <Button x:Name="NoRecoilButton" Content="No Recoil" IsEnabled="False" HorizontalAlignment="Left" Margin="172,98,0,0" VerticalAlignment="Top" Height="20" Width="98" Click="NoRecoilButton_Click"/>
+                    <Button x:Name="RedBoxesButton" Content="Red Boxes" IsEnabled="False" HorizontalAlignment="Left" Margin="49,124,0,0" VerticalAlignment="Top" Height="20" Width="98" Click="RedBoxesButton_Click"/>
+                    <Button x:Name="AllPerksButton" Content="All Perks" IsEnabled="False" HorizontalAlignment="Left" Margin="172,148,0,0" VerticalAlignment="Top" Height="20" Width="98"/>
+                    <Button x:Name="ThermalRedBoxesButton" Content="Thermal Vison" IsEnabled="False" HorizontalAlignment="Left" Margin="49,148,0,0" VerticalAlignment="Top" Height="20" Width="98" Click="ThermalRedBoxesButton_Click"/>
+                    <Button x:Name="PrimaryAkimboButton" Content="Primary Akimbo" IsEnabled="False" HorizontalAlignment="Left" Margin="49,46,0,0" VerticalAlignment="Top" Height="20" Width="98"/>
+                    <Button x:Name="SecondaryAkimboButton" Content="Secondary Akimbo" IsEnabled="False" HorizontalAlignment="Left" Margin="172,46,0,0" VerticalAlignment="Top" Height="20" Width="98" FontSize="11"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

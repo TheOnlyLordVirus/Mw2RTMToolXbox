@@ -84,10 +84,18 @@ public sealed partial class MainWindow
             SendGameServerCommandTextBox.IsEnabled = true;
             SendGameServerCommandButton.IsEnabled = true;
 
-            UnlockAllButton.IsEnabled = true;
             EndGameButton.IsEnabled = true;
 
+
             ClientComboBox.IsEnabled = true;
+            UnlockAllButton.IsEnabled = true;
+            NoClipButton.IsEnabled = true;
+            NoRecoilButton.IsEnabled = true;
+            GodModeButton.IsEnabled = true;
+            ThermalCheckBox.IsEnabled = true;
+            RedBoxCheckBox.IsEnabled = true;
+            PrimaryAkimboButton.IsEnabled = true;
+            SecondaryAkimboButton.IsEnabled = true;
 
             Internal_UpdateCurrentUserInfo();
             Mw2GameFunctions.Cbuf_AddText(devKit!, "loc_warningsUI 0; loc_warnings 0;");

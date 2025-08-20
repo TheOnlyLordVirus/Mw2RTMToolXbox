@@ -26,6 +26,11 @@ internal sealed record class G_Client (IXboxConsole XboxConsole, int ClientIndex
     public Task UnlockAll(CancellationToken cancellationToken = default) =>
         Functions.UnlockAll(XboxConsole, ClientIndex, cancellationToken);
 
+    public void iPrintLn(string printMe) =>
+        Functions.iPrintLn(XboxConsole, printMe, ClientIndex);
+    public void iPrintLnBold(string printMe) =>
+        Functions.iPrintLnBold(XboxConsole, printMe, ClientIndex);
+
     public override string ToString() => ClientName;
     private string clientName = string.Empty;
     public string ClientName

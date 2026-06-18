@@ -14,18 +14,6 @@ internal sealed class G_ClientCheat : IGameCheat
     private readonly IXboxConsole _xboxConsole;
     private readonly G_ClientStructOffset _cheatOffset;
     private readonly G_ClientStructOffset _correctedCheatAddress;
-    private G_ClientStructOffset CorrectedCheatAddress
-    {
-        get => _correctedCheatAddress;
-
-        init
-        {
-            _correctedCheatAddress =
-                G_ClientStructOffset.Array_BaseAddress +
-                    (G_ClientStructOffset.StructSize * (uint)_clientNumber) +
-                        _cheatOffset;
-        }
-    }
 
     private readonly string? _cheatName;
     private readonly int _clientNumber = 0;
@@ -53,6 +41,11 @@ internal sealed class G_ClientCheat : IGameCheat
 
         _onBytes = [onByte];
         _offBytes = [offByte];
+
+        _correctedCheatAddress =
+            G_ClientStructOffset.Array_BaseAddress +
+                    (G_ClientStructOffset.StructSize * (uint)_clientNumber) +
+                        _cheatOffset;
     }
 
     public G_ClientCheat
@@ -77,6 +70,12 @@ internal sealed class G_ClientCheat : IGameCheat
 
         _onBytes = onBytes;
         _offBytes = offBytes;
+
+        _correctedCheatAddress = 
+            G_ClientStructOffset.Array_BaseAddress +
+                    (G_ClientStructOffset.StructSize * (uint)_clientNumber) +
+                        _cheatOffset;
+
     }
 
     public void Enable()
@@ -86,7 +85,7 @@ internal sealed class G_ClientCheat : IGameCheat
             _xboxConsole
                 .WriteBytes
                 (
-                    CorrectedCheatAddress,
+                    _correctedCheatAddress,
                     _onBytes
                 );
 
@@ -94,7 +93,7 @@ internal sealed class G_ClientCheat : IGameCheat
                 Functions.iPrintLn(_xboxConsole, $"{_cheatName}^7: ^2Enabled", _clientNumber);
         }
 
-        catch
+        catch (Exception Ex)
         {
             return;
         }
@@ -109,7 +108,7 @@ internal sealed class G_ClientCheat : IGameCheat
             _xboxConsole
                 .WriteBytes
                 (
-                    CorrectedCheatAddress,
+                    _correctedCheatAddress,
                     _offBytes
                 );
 
@@ -150,7 +149,7 @@ internal sealed class G_ClientCheat : IGameCheat
         => _xboxConsole
                 .ReadBytes
                 (
-                    CorrectedCheatAddress,
+                    _correctedCheatAddress,
                     _byteCount
                 );
 }

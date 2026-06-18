@@ -92,10 +92,12 @@ public sealed partial class MainWindow
             NoClipButton.IsEnabled = true;
             NoRecoilButton.IsEnabled = true;
             GodModeButton.IsEnabled = true;
-            ThermalCheckBox.IsEnabled = true;
-            RedBoxCheckBox.IsEnabled = true;
-            PrimaryAkimboButton.IsEnabled = true;
-            SecondaryAkimboButton.IsEnabled = true;
+            ThermalRedBoxesButton.IsEnabled = true;
+            RedBoxesButton.IsEnabled = true;
+            InfAmmoButton.IsEnabled = true;
+            AllPerksButton.IsEnabled = true;
+            //PrimaryAkimboButton.IsEnabled = true;
+            //SecondaryAkimboButton.IsEnabled = true;
 
             Internal_UpdateCurrentUserInfo();
             Mw2GameFunctions.Cbuf_AddText(devKit!, "loc_warningsUI 0; loc_warnings 0;");

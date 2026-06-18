@@ -343,8 +343,6 @@ public sealed partial class MainWindow : Window
             return;
 
         SelectedClient.Godmode.Toggle();
-
-        SelectedClient.iPrintLn($"God Mode: {SelectedClient.Godmode.GetValue()}");
     }
 
     private void NoClipButton_Click(object sender, RoutedEventArgs e)
@@ -353,8 +351,6 @@ public sealed partial class MainWindow : Window
             return;
 
         SelectedClient.NoClip.Toggle();
-
-        SelectedClient.iPrintLn($"No Clip: {SelectedClient.NoClip.GetValue()}");
     }
 
     private void NoRecoilButton_Click(object sender, RoutedEventArgs e)
@@ -363,8 +359,6 @@ public sealed partial class MainWindow : Window
             return;
 
         SelectedClient.NoRecoil.Toggle();
-
-        SelectedClient.iPrintLn($"No Recoil: {SelectedClient.NoRecoil.GetValue()}");
     }
 
     private void RedBoxesButton_Click(object sender, RoutedEventArgs e)
@@ -373,8 +367,6 @@ public sealed partial class MainWindow : Window
             return;
 
         SelectedClient.Redboxes.Toggle();
-
-        SelectedClient.iPrintLn($"Red Boxes: {SelectedClient.Redboxes.GetValue()}");
     }
 
     private void InfAmmoButton_Click(object sender, RoutedEventArgs e)
@@ -383,8 +375,6 @@ public sealed partial class MainWindow : Window
             return;
 
         SelectedClient.InfiniteAmmo.Toggle();
-
-        SelectedClient.iPrintLn($"Infinite Ammo: {SelectedClient.InfiniteAmmo.GetValue()}");
     }
 
     private void ThermalRedBoxesButton_Click(object sender, RoutedEventArgs e)
@@ -393,8 +383,6 @@ public sealed partial class MainWindow : Window
             return;
 
         SelectedClient.ThermalRedboxes.Toggle();
-
-        SelectedClient.iPrintLn($"Thermal Vision: {SelectedClient.ThermalRedboxes.GetValue()}");
     }
 
     private void AllPerksButton_Click(object sender, RoutedEventArgs e)
@@ -403,7 +391,29 @@ public sealed partial class MainWindow : Window
             return;
 
         SelectedClient.AllPerks.Toggle();
+    }
 
-        SelectedClient.iPrintLn($"All Perks: {SelectedClient.AllPerks.GetValue()}");
+    private void PrimaryAkimboButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (SelectedClient is null)
+            return;
+
+        SelectedClient.PrimaryAkimbo.Toggle();
+    }
+
+    private void SecondaryAkimboButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (SelectedClient is null)
+            return;
+
+        SelectedClient.SecondaryAkimbo.Toggle();
+    }
+
+    private void AllPerksButton_Click_1(object sender, RoutedEventArgs e)
+    {
+        if (SelectedClient is null)
+            return;
+
+        SelectedClient.AllPerks.Toggle();
     }
 }

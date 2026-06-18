@@ -14,18 +14,6 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
     private readonly IXboxConsole _xboxConsole;
     private readonly G_ClientStructOffset _cheatOffset;
     private readonly G_ClientStructOffset _correctedCheatAddress;
-    private G_ClientStructOffset CorrectedCheatAddress
-    {
-        get => _correctedCheatAddress;
-
-        init
-        {
-            _correctedCheatAddress =
-                G_ClientStructOffset.Array_BaseAddress +
-                    (G_ClientStructOffset.StructSize * (uint)_clientNumber) +
-                        _cheatOffset;
-        }
-    }
 
     private readonly string? _cheatName;
     private readonly int _clientNumber = 0;
@@ -57,6 +45,11 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
         _offBytes = [offByte];
 
         _cheatName = cheatName;
+
+        _correctedCheatAddress =
+            G_ClientStructOffset.Array_BaseAddress +
+                (G_ClientStructOffset.StructSize * (uint)_clientNumber) +
+                    _cheatOffset;
     }
 
     public G_ClientLoopingCheat(
@@ -78,6 +71,11 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
         _offBytes = offBytes;
 
         _cheatName = cheatName;
+
+        _correctedCheatAddress =
+            G_ClientStructOffset.Array_BaseAddress +
+                (G_ClientStructOffset.StructSize * (uint)_clientNumber) +
+                    _cheatOffset;
     }
 
     public G_ClientLoopingCheat(
@@ -96,6 +94,11 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
         _gameCheats = gameCheats;
 
         _cheatName = cheatName;
+
+        _correctedCheatAddress =
+            G_ClientStructOffset.Array_BaseAddress +
+                (G_ClientStructOffset.StructSize * (uint)_clientNumber) +
+                    _cheatOffset;
     }
 
     public G_ClientLoopingCheat(
@@ -114,6 +117,11 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
         _gameCheats = [gameCheats];
 
         _cheatName = cheatName;
+
+        _correctedCheatAddress =
+            G_ClientStructOffset.Array_BaseAddress +
+                (G_ClientStructOffset.StructSize * (uint)_clientNumber) +
+                    _cheatOffset;
     }
 
     public async Task SetLoop(CancellationToken cancellationToken)
@@ -129,7 +137,7 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
                     _xboxConsole
                         .WriteBytes
                         (
-                            CorrectedCheatAddress,
+                            _correctedCheatAddress,
                             _onBytes!
                         );
 
@@ -150,7 +158,7 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
                 _xboxConsole
                     .WriteBytes
                     (
-                        CorrectedCheatAddress,
+                        _correctedCheatAddress,
                         _offBytes!
                     );
 

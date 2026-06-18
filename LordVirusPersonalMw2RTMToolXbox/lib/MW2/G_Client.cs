@@ -16,7 +16,7 @@ using Constants = Mw2XboxLibConstants;
 // TODO: Get the in game check for the current client without RPC calling GetDvarBool.
 // TODO: Fix missing G_Client mods / addresses
 // TODO: Add magic bullets for clients.
-internal sealed record class G_Client (IXboxConsole XboxConsole, int ClientIndex = 0)
+internal sealed record class G_Client(IXboxConsole XboxConsole, int ClientIndex = 0)
 {
     private readonly G_ClientStructOffset _correctedNameAddress =
                 (G_ClientStructOffset.Array_BaseAddress +
@@ -70,24 +70,6 @@ internal sealed record class G_Client (IXboxConsole XboxConsole, int ClientIndex
         }
     }
 
-#if DEBUG
-    private readonly IGameCheat? _debugCheat = null;
-    public IGameCheat? DebugCheat
-    {
-        get => _debugCheat;
-        init
-        {
-            //_debugCheat = new G_ClientCheat
-            //(
-            //    XboxConsole,
-            //    G_ClientStructOffset.DebugOffset,
-            //    ClientIndex,
-            //    cheatName: "Debug Cheat"
-            //);
-        }
-    }
-#endif
-
     public readonly IGameCheat Godmode
         = new G_ClientCheat
             (
@@ -99,7 +81,7 @@ internal sealed record class G_Client (IXboxConsole XboxConsole, int ClientIndex
                 cheatName: "God Mode"
             );
 
-    public readonly IGameCheat Redboxes 
+    public readonly IGameCheat Redboxes
         = new G_ClientLoopingCheat
             (
                 XboxConsole,
@@ -158,7 +140,7 @@ internal sealed record class G_Client (IXboxConsole XboxConsole, int ClientIndex
                 cheatName: "Primary Akimbo"
             );
 
-    public readonly IGameCheat SecondaryAkimbo 
+    public readonly IGameCheat SecondaryAkimbo
         = new G_ClientCheat
             (
                 XboxConsole,
@@ -167,7 +149,7 @@ internal sealed record class G_Client (IXboxConsole XboxConsole, int ClientIndex
                 cheatName: "Secondary Akimbo"
             );
 
-    public readonly IGameCheat AllPerks 
+    public readonly IGameCheat AllPerks
         = new G_ClientLoopingCheat
             (
                 XboxConsole,
@@ -178,49 +160,75 @@ internal sealed record class G_Client (IXboxConsole XboxConsole, int ClientIndex
                 cheatName: "All Perks"
             );
 
-    private readonly IGameCheat _infiniteAmmo = default!;
-    public IGameCheat InfiniteAmmo 
-    { 
-        get => _infiniteAmmo;
-        private init
-        {
-            _infiniteAmmo = new G_ClientLoopingCheat
-            (
-                XboxConsole,
-                ClientIndex,
-                Internal_BuildInfAmmoCheats(),
-                cheatName: "Infinite Ammo"
-            );
-        }
-    }
 
-    private IGameCheat[] Internal_BuildInfAmmoCheats()
+    private readonly IGameCheat[] _infAmmoCheats =
+    [
+        new G_ClientCheat
+        (
+            XboxConsole,
+            G_ClientStructOffset.InfAmmo1,
+            ClientIndex,
+            onBytes: Constants.InfiniteAmmoOn,
+            offBytes: Constants.InfiniteAmmoOff
+        ),
+        new G_ClientCheat
+        (
+            XboxConsole,
+            G_ClientStructOffset.InfAmmo2,
+            ClientIndex,
+            onBytes: Constants.InfiniteAmmoOn,
+            offBytes: Constants.InfiniteAmmoOff
+        ),
+        new G_ClientCheat
+        (
+            XboxConsole,
+            G_ClientStructOffset.InfAmmo3,
+            ClientIndex,
+            onBytes: Constants.InfiniteAmmoOn,
+            offBytes: Constants.InfiniteAmmoOff
+        ),
+        new G_ClientCheat
+        (
+            XboxConsole,
+            G_ClientStructOffset.InfAmmo4,
+            ClientIndex,
+            onBytes: Constants.InfiniteAmmoOn,
+            offBytes: Constants.InfiniteAmmoOff
+        ),
+        new G_ClientCheat
+        (
+            XboxConsole,
+            G_ClientStructOffset.InfAmmo5,
+            ClientIndex,
+            onBytes: Constants.InfiniteAmmoOn,
+            offBytes: Constants.InfiniteAmmoOff
+        ),
+        new G_ClientCheat
+        (
+            XboxConsole,
+            G_ClientStructOffset.InfAmmo6,
+            ClientIndex,
+            onBytes: Constants.InfiniteAmmoOn,
+            offBytes: Constants.InfiniteAmmoOff
+        )
+
+    ];
+
+    public IGameCheat _infiniteAmmo = default!;
+    public IGameCheat InfiniteAmmo
     {
-        const byte offsetCount = 6;
-
-        var infAmmoOffsets = new G_ClientStructOffset[offsetCount];
-
-        byte index = 0;
-        infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo1; index++;
-        infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo2; index++;
-        infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo3; index++;
-        infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo4; index++;
-        infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo5; index++;
-        infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo6; index++;
-
-        var infAmmoGameCheats = new IGameCheat[offsetCount];
-
-        // Set looping max ammo capacity for all 6 Weapon slots.
-        for (byte i = 0; i < offsetCount; ++i)
-            infAmmoGameCheats[i] = new G_ClientCheat
+        get 
+        { 
+            if (_infiniteAmmo is null)
+                _infiniteAmmo = new G_ClientLoopingCheat
                 (
                     XboxConsole,
-                    infAmmoOffsets[i],
                     ClientIndex,
-                    onBytes: Constants.InfiniteAmmoOn,
-                    offBytes: Constants.InfiniteAmmoOff
-                );
+                    _infAmmoCheats,
+                    "InfiniteAmmo"
+                ); 
 
-        return infAmmoGameCheats;
+            return _infiniteAmmo; 
+        }
     }
 }
